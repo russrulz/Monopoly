@@ -78,6 +78,36 @@ namespace Monopoly__Mario_Kart_
                 this.points = points;
             }
         };
+        public struct Racer {
+            public readonly string name;
+            public readonly string super_star;
+            public readonly string power_up;
+
+            public Racer(string name, string super_star, string powerup)
+            {
+                this.name = name;
+                this.super_star = super_star;
+                this.power_up = powerup;
+            }
+        }
+        public struct player {
+            public Racer racer;
+            public List<property> properties;
+            public int boardposition;
+            public List<race> races;
+            public int coins;
+            public bool jail;
+            public player(Racer racer)
+            {
+                this.racer = racer;
+                boardposition = 0;
+                races = new List<race>();
+                coins = 10;
+                jail = false;
+                properties = new List<property>();
+            }
+
+        }
         public struct property { 
             readonly int cost; 
             readonly string name; 
@@ -95,9 +125,10 @@ namespace Monopoly__Mario_Kart_
                 this.set = set;
             }
         };
-        List<race> Races; //add all race cards to set
-        List<property> Properties;// add properties to list 
-        List<Racer> characters;
+        List<race> Races = new List<race>(); //add all race cards to set
+        List<property> Properties = new List<property>();// add properties to list 
+        List<Racer> characters = new List<Racer>();
+        List<player> players = new List<player>();
         private void Main() {
             int laps = 0;
             while (Races.Count > 0) { 
@@ -110,6 +141,37 @@ namespace Monopoly__Mario_Kart_
         private void resetgame()
         {
             //clear all lists and repopulate
+            throw new NotImplementedException();
+        }
+
+        private void startbtn_Click(object sender, EventArgs e){
+        
+            //select character
+            selectracerplayer();
+            //select number of opponenets
+            //netwokring?
+
+        }
+
+        private void selectracerplayer()
+        {
+            //ask whihc racer they want
+            //create UI for showing racers cards
+            int r = checkracer();
+            selectracer(r);
+        }
+
+        private int checkracer()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void selectracer(int r)
+        {
+            //link player to person that selected it somehow
+            players.Add(new player(characters[r]));
+            //remove from list so i can tell what characters are unselected
+            characters.RemoveAt(r);
             throw new NotImplementedException();
         }
     
