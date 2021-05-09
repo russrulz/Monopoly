@@ -49,10 +49,35 @@ namespace Monopoly__Mario_Kart_
             Properties.Add(new property("Sweet sweet Canyon", 1, 10, 1, 2, "Thwomp Ruins"));
             Properties.Add(new property("Water Park", 1, 10, 1, 2, "Mario Kart Stadium"));
             Properties.Add(new property("Mario Kart Stadium", 1, 10, 1, 2, "Water Park"));
+            Races.Add(new race("Moo  Moo Meadows", 1, 1, "Take least expensive unowned property", "collect 3 coins", "Toss a green shell",20));
+            Races.Add(new race("Toads Turnpike",2,1,"All Players pay you 2 coins","Roll number  die collect that many coins","collect 3 coins",20));
+            Races.Add(new race("Royal Raceway", 3, 2, "Buy one property from any player for face value", "collect 4 coins", "toss a blue shell", 30));
+            Races.Add(new race("DK Jungle",4,2,"send any player including yourself to free parking do not pass go or collect coins","roll power up die and complete the action","",30));
+            Races.Add(new race("Sherbet Land",5,3,"Force Property trade between 2 players","place 1 bannana on 1 of your properties","",40));
+            Races.Add(new race("Yoshi Valley",6,2,"Put any property up for auction Payment goes to bank","Roll number die collect that many coins","",40));
+            Races.Add(new race("Tick-Tock Clock",7,3,"Send any player to jail","roll powerup die complete the action","",50));
+            Races.Add(new race("Rainbow Road",8,3,"Choose 1 Grendprix card from any player rerace it","","",100));
+
         }
         int[] Dice = new int[] { 1, 2, 3, 4, 5, 6 };
         string[] Powerdice = new string[] { "Coin", "Bannana", "Green Shell", "Lightning", "Blue Shell", "Coin" };
-        public struct race { };
+        public struct race { 
+            readonly string name;
+            readonly int racenumber;
+            readonly int entrycost; 
+            readonly string first_reward;
+            readonly string second_reward; 
+            readonly string third_reward; int points;
+            public race(string name, int racenumber,int cost,string first,string second,string third,int points) {
+                this.name = name;
+                this.racenumber = racenumber;
+                this.entrycost = cost;
+                this.first_reward = first;
+                this.second_reward = second;
+                this.third_reward = third;
+                this.points = points;
+            }
+        };
         public struct property { 
             readonly int cost; 
             readonly string name; 
@@ -74,8 +99,10 @@ namespace Monopoly__Mario_Kart_
         List<property> Properties;// add properties to list 
         List<Racer> characters;
         private void Main() {
+            int laps = 0;
             while (Races.Count > 0) { 
             
+                //increments 'laps' when someone passes go and start the race with the racenumber of 'laps'
             }
             resetgame();
         }
