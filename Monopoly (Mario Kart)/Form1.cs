@@ -125,10 +125,21 @@ namespace Monopoly__Mario_Kart_
                 this.set = set;
             }
         };
+        public struct space { 
+            readonly string type;
+            readonly string name;
+            public space(string type, string name)
+            {
+                this.type = type;
+                this.name = name;
+
+            }
+        }
         List<race> Races = new List<race>(); //add all race cards to set
         List<property> Properties = new List<property>();// add properties to list 
         List<Racer> characters = new List<Racer>();
         List<player> players = new List<player>();
+        List<space> board = new List<space>();
         private void Main() {
             int laps = 0;
             while (Races.Count > 0) { 
