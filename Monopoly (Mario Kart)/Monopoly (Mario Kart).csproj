@@ -76,6 +76,32 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\bowserback.png" />
+    <Content Include="Images\Bowserfront.png" />
+    <Content Include="Images\donkeykongback.png" />
+    <Content Include="Images\donkeykongfront.png" />
+    <Content Include="Images\Luigiback.png" />
+    <Content Include="Images\Luigifront.png" />
+    <Content Include="Images\marioback.png" />
+    <Content Include="Images\mariofront.png" />
+    <Content Include="Images\metalmarioback.png" />
+    <Content Include="Images\metalmariofront.png" />
+    <Content Include="Images\Peachback.png" />
+    <Content Include="Images\Peachfront.png" />
+    <Content Include="Images\rosalinaback.png" />
+    <Content Include="Images\rosilinafront.png" />
+    <Content Include="Images\Rules1.png" />
+    <Content Include="Images\Rules2.png" />
+    <Content Include="Images\Rules3.png" />
+    <Content Include="Images\Rules4.png" />
+    <Content Include="Images\shyguyback.png" />
+    <Content Include="Images\Shyguyfront.png" />
+    <Content Include="Images\toadback.png" />
+    <Content Include="Images\toadfront.png" />
+    <Content Include="Images\yoshiback.png" />
+    <Content Include="Images\yoshifront.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
