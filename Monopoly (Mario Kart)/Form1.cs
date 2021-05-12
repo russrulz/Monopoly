@@ -100,12 +100,13 @@ namespace Monopoly__Mario_Kart_
         int[] Dice = new int[] { 1, 2, 3, 4, 5, 6 };
         string[] Powerdice = new string[] { "Coin", "Bannana", "Green Shell", "Lightning", "Blue Shell", "Coin" };
         public struct race { 
-            readonly string name;
-            readonly int racenumber;
-            readonly int entrycost; 
-            readonly string first_reward;
-            readonly string second_reward; 
-            readonly string third_reward; int points;
+            public readonly string name;
+            public readonly int racenumber;
+            public readonly int entrycost; 
+            public readonly string first_reward;
+            public readonly string second_reward; 
+            public readonly string third_reward; 
+            public readonly int points;
             public race(string name, int racenumber,int cost,string first,string second,string third,int points) {
                 this.name = name;
                 this.racenumber = racenumber;
@@ -149,12 +150,12 @@ namespace Monopoly__Mario_Kart_
 
         }
         public struct property { 
-            readonly int cost; 
-            readonly string name; 
-            readonly int points;
-            readonly int rent; 
-            readonly int setrent;
-            readonly string set;
+            public readonly int cost; 
+            public readonly string name; 
+            public readonly int points;
+            public readonly int rent; 
+            public readonly int setrent;
+            public readonly string set;
             public property(string name, int cost, int points, int rent, int setrent , string set)
             {
                 this.name = name;
@@ -166,8 +167,8 @@ namespace Monopoly__Mario_Kart_
             }
         };
         public struct space { 
-            readonly string type;
-            readonly string name;
+            public readonly string type;
+            public readonly string name;
             public space(string type, string name)
             {
                 this.type = type;
@@ -182,11 +183,42 @@ namespace Monopoly__Mario_Kart_
         List<space> Board = new List<space>();
         private void Main() {
             int laps = 0;
+            int currentplayer = 0;
             while (Races.Count > 0) { 
-            
+
+                
                 //increments 'laps' when someone passes go and start the race with the racenumber of 'laps'
+                //end turn
+                currentplayer++;//move to next player for next turn
+                if (currentplayer > players.Count){//if the list of players has gone around go to the start of the list
+                    currentplayer = 0;
+                }
             }
+            calculate_winner();
             resetgame();
+        }
+
+        private player calculate_winner()
+        {
+            player winner = new player();
+            int winning_score = 0;
+            foreach (player pl in players) {
+                int score = 0;
+                foreach (property p in pl.properties) {
+                    score += p.points;
+                }
+                foreach (race r in pl.races) {
+                    score += r.points;
+                }
+                int c = pl.coins / 5;//calculate how many sets of 5 the player has
+                score += c * 10;//award 10 points per set of 5 coins
+                if (score > winning_score)
+                {
+                    winner = pl;
+                }
+            }
+
+            return winner;
         }
 
         private void resetgame()
