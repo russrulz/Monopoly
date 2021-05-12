@@ -33,6 +33,7 @@ namespace Monopoly__Mario_Kart_
             characters.Add(new Racer("Toad", "You may drop up to 5 coins to move that many spaces", "Lightning: All places drop 1 coin and give you 1 coin"));
             characters.Add(new Racer("Princess Peach", "At the end of your turn roll powerup die and coplete the action", "Blue Shell: Choose 2 players to drop 3 coins"));
             characters.Add(new Racer("Mario", "Collect 3 coins then roll number die and move again", "Collect 3 Coins or add up to 3 to your roll"));
+
             Properties.Add(new property("Rainbow Road", 5, 50, 5, 10, "Bowser's Castle"));
             Properties.Add(new property("Bowser's Castle", 5, 50, 5, 10, "Rainbow Road"));
             Properties.Add(new property("Bone-Dry Dunes", 4, 40, 4, 8, "Cloudtop Cruise"));
@@ -49,6 +50,7 @@ namespace Monopoly__Mario_Kart_
             Properties.Add(new property("Sweet sweet Canyon", 1, 10, 1, 2, "Thwomp Ruins"));
             Properties.Add(new property("Water Park", 1, 10, 1, 2, "Mario Kart Stadium"));
             Properties.Add(new property("Mario Kart Stadium", 1, 10, 1, 2, "Water Park"));
+
             Races.Add(new race("Moo  Moo Meadows", 1, 1, "Take least expensive unowned property", "collect 3 coins", "Toss a green shell",20));
             Races.Add(new race("Toads Turnpike",2,1,"All Players pay you 2 coins","Roll number  die collect that many coins","collect 3 coins",20));
             Races.Add(new race("Royal Raceway", 3, 2, "Buy one property from any player for face value", "collect 4 coins", "toss a blue shell", 30));
@@ -58,7 +60,43 @@ namespace Monopoly__Mario_Kart_
             Races.Add(new race("Tick-Tock Clock",7,3,"Send any player to jail","roll powerup die complete the action","",50));
             Races.Add(new race("Rainbow Road",8,3,"Choose 1 Grendprix card from any player rerace it","","",100));
 
+            Board.Add(new space("GO","GO"));
+            Board.Add(new space("Property", "Mario Kart Stadium"));
+            Board.Add(new space("Boost", "roll number die move that many if banana hit stop there"));
+            Board.Add(new space("Property", "Water Park"));
+            Board.Add(new space("Item", "Roll number die collect that many coins"));
+            Board.Add(new space("Property","Sweet sweet Canyon"));
+            Board.Add(new space("superstar",""));
+            Board.Add(new space("Property","Thwomp Ruins"));
+            Board.Add(new space("Jail",""));
+            Board.Add(new space("Property","Mario Circuit"));
+            Board.Add(new space("Boost", "roll number die move that many if banana hit stop there"));
+            Board.Add(new space("Property","Toad Harbour"));
+            Board.Add(new space("Thwomp","Drop 2 coins"));
+            Board.Add(new space("Property","Twisted Mansion"));
+            Board.Add(new space("superstar",""));
+            Board.Add(new space("Property","Shyguy Falls"));
+            Board.Add(new space("Free Parking", "Do Nothing"));
+            Board.Add(new space("Property","Sunshine Airport"));
+            Board.Add(new space("Boost", "roll number die move that many if banana hit stop there"));
+            Board.Add(new space("Property","Dophin Shoals"));
+            Board.Add(new space("Item", "Roll number die collect that many coins"));
+            Board.Add(new space("Property","Electrodrome"));
+            Board.Add(new space("superstar", ""));
+            Board.Add(new space("Property","Mount Ward"));
+            Board.Add(new space("Go To Jail","jail=true"));
+            Board.Add(new space("Property","Cloudtop Cruise"));
+            Board.Add(new space("Boost", "roll number die move that many if banana hit stop there"));
+            Board.Add(new space("Property","Bone-Dry Dunes"));
+            Board.Add(new space("Thwomp", "Drop 2 coins"));
+            Board.Add(new space("Property","Bowser's Castle"));
+            Board.Add(new space("superstar", ""));
+            Board.Add(new space("Property","Rainbow Road"));
+
+
         }
+        public bool Network = false;
+        public bool Host = false;
         int[] Dice = new int[] { 1, 2, 3, 4, 5, 6 };
         string[] Powerdice = new string[] { "Coin", "Bannana", "Green Shell", "Lightning", "Blue Shell", "Coin" };
         public struct race { 
@@ -97,14 +135,16 @@ namespace Monopoly__Mario_Kart_
             public List<race> races;
             public int coins;
             public bool jail;
-            public player(Racer racer)
+            public int id;
+            public player(Racer racer, int id)
             {
                 this.racer = racer;
-                boardposition = 0;
-                races = new List<race>();
-                coins = 10;
-                jail = false;
-                properties = new List<property>();
+                this.boardposition = 0;
+                this.races = new List<race>();
+                this.coins = 10;
+                this.id = id;
+                this.jail = false;
+                this.properties = new List<property>();
             }
 
         }
@@ -139,7 +179,7 @@ namespace Monopoly__Mario_Kart_
         List<property> Properties = new List<property>();// add properties to list 
         List<Racer> characters = new List<Racer>();
         List<player> players = new List<player>();
-        List<space> board = new List<space>();
+        List<space> Board = new List<space>();
         private void Main() {
             int laps = 0;
             while (Races.Count > 0) { 
@@ -156,20 +196,21 @@ namespace Monopoly__Mario_Kart_
         }
 
         private void startbtn_Click(object sender, EventArgs e){
-        
+
+            int i = 1;
             //select character
-            selectracerplayer();
+            selectracerplayer(i);
             //select number of opponenets
             //netwokring?
 
         }
 
-        private void selectracerplayer()
+        private void selectracerplayer(int id)
         {
             //ask whihc racer they want
             //create UI for showing racers cards
             int r = checkracer();
-            selectracer(r);
+            selectracer(r,id);
         }
 
         private int checkracer()
@@ -177,10 +218,10 @@ namespace Monopoly__Mario_Kart_
             throw new NotImplementedException();
         }
 
-        private void selectracer(int r)
+        private void selectracer(int r,int id)
         {
             //link player to person that selected it somehow
-            players.Add(new player(characters[r]));
+            players.Add(new player(characters[r],id));
             //remove from list so i can tell what characters are unselected
             characters.RemoveAt(r);
             throw new NotImplementedException();
