@@ -1,6 +1,7 @@
-﻿namespace Monopoly__Mario_Kart_
+﻿
+namespace Monopoly__Mario_Kart_
 {
-    partial class Form1
+    partial class Form2
     {
         /// <summary>
         /// Required designer variable.
@@ -28,35 +29,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.startbtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // startbtn
-            // 
-            this.startbtn.Location = new System.Drawing.Point(29, 631);
-            this.startbtn.Name = "startbtn";
-            this.startbtn.Size = new System.Drawing.Size(75, 23);
-            this.startbtn.TabIndex = 0;
-            this.startbtn.Text = "Start";
-            this.startbtn.UseVisualStyleBackColor = true;
-            this.startbtn.Click += new System.EventHandler(this.startbtn_Click);
-            // 
-            // Form1
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.startbtn);
-            this.Name = "Form1";
-            this.Text = "Monopoly Gamer Mario Kart";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Name = "Form2";
+            this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button startbtn;
     }
 }
-

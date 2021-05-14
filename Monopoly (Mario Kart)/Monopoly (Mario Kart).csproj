@@ -46,16 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Player.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Race.cs" />
+    <Compile Include="Monopoly %28Mario Kart%29.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Monopoly %28Mario Kart%29.Designer.cs">
+      <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Character Select.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Character Select.Designer.cs">
+      <DependentUpon>Character Select.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Racer.cs" />
+    <Compile Include="Space.cs" />
+    <EmbeddedResource Include="Character Select.resx">
+      <DependentUpon>Character Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Monopoly %28Mario Kart%29.resx">
+      <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
