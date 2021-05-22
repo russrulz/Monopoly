@@ -15,6 +15,7 @@ namespace Monopoly__Mario_Kart_
             public bool jail;
             public readonly int id;
             public readonly bool PC;
+            public bool skippower;
             public Player(Racer racer, int id, bool PC)
             {
                 this.racer = racer;
@@ -25,6 +26,7 @@ namespace Monopoly__Mario_Kart_
                 this.jail = false;
                 this.properties = new List<Property>();
                 this.PC = PC;
+            this.skippower = false;
             }
 
     }
