@@ -408,9 +408,9 @@ namespace Monopoly__Mario_Kart_
 
         private void Buyproperty(Player p, Property property)
         {
-                p.coins -= property.cost;//charge player
+                p.coins -= property.cost;//charge player                
+                Properties.Remove(property);//remove from banks properties
                 p.properties.Add(property);//add property to players inventory
-                Properties.Remove(property);//remove from banks properties            
         }
 
         private void auction(Property property)
