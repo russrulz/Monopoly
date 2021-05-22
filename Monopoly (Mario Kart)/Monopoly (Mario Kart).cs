@@ -66,7 +66,7 @@ namespace Monopoly__Mario_Kart_
             Board.Add(new Space("Property", "Water Park"));
             Board.Add(new Space("Item", "Roll number die collect that many coins"));
             Board.Add(new Space("Property","Sweet sweet Canyon"));
-            Board.Add(new Space("superstar",""));
+            Board.Add(new Space("Super Star", ""));
             Board.Add(new Space("Property","Thwomp Ruins"));
             Board.Add(new Space("Jail",""));
             Board.Add(new Space("Property","Mario Circuit"));
@@ -74,7 +74,7 @@ namespace Monopoly__Mario_Kart_
             Board.Add(new Space("Property","Toad Harbour"));
             Board.Add(new Space("Thwomp","Drop 2 coins"));
             Board.Add(new Space("Property","Twisted Mansion"));
-            Board.Add(new Space("superstar",""));
+            Board.Add(new Space("Super Star",""));
             Board.Add(new Space("Property","Shyguy Falls"));
             Board.Add(new Space("Free Parking", "Do Nothing"));
             Board.Add(new Space("Property","Sunshine Airport"));
@@ -82,7 +82,7 @@ namespace Monopoly__Mario_Kart_
             Board.Add(new Space("Property","Dophin Shoals"));
             Board.Add(new Space("Item", "Roll number die collect that many coins"));
             Board.Add(new Space("Property","Electrodrome"));
-            Board.Add(new Space("superstar", ""));
+            Board.Add(new Space("Super Star", ""));
             Board.Add(new Space("Property","Mount Ward"));
             Board.Add(new Space("Go To Jail","jail=true"));
             Board.Add(new Space("Property","Cloudtop Cruise"));
@@ -90,13 +90,14 @@ namespace Monopoly__Mario_Kart_
             Board.Add(new Space("Property","Bone-Dry Dunes"));
             Board.Add(new Space("Thwomp", "Drop 2 coins"));
             Board.Add(new Space("Property","Bowser's Castle"));
-            Board.Add(new Space("superstar", ""));
+            Board.Add(new Space("Super Star", ""));
             Board.Add(new Space("Property","Rainbow Road"));
 
 
         }
         public bool NETWORK = false;
         public bool HOST = false;
+        public bool PASSGO = false;
         int[] Dice = new int[] { 1, 2, 3, 4, 5, 6 };
         string[] Powerdice = new string[] { "Coin", "Bannana", "Green Shell", "Lightning", "Blue Shell", "Coin" };
         List<Race> Races = new List<Race>(); //add all race cards to set
@@ -128,12 +129,18 @@ namespace Monopoly__Mario_Kart_
                     { //if current player is pc do turn
                         string power = rollpowerup();
                         int move = rollnumber();
-                        usepowerup(power,players[currentplayer]);
-                        usemove(move,players[currentplayer]);
+                        usepowerup(power,players[currentplayer],move);
+                        moveplayer(move,players[currentplayer]);
                     }
                     else {// wait for player input 
 
                     }
+                }
+                if (PASSGO)
+                {
+                    players[currentplayer].coins += 2;
+                    startrace(laps,currentplayer);
+                    laps++;
                 }
                 //increments 'laps' when someone passes go and start the race with the racenumber of 'laps'
                 //end turn
@@ -146,18 +153,27 @@ namespace Monopoly__Mario_Kart_
             resetgame();
         }
 
-        private void usemove(int move,Player p)
+        private void startrace(int laps,int cp)
         {
-            throw new NotImplementedException();
+            Race r = Races[laps];
+            for (int i = cp; i > players.Count;  i++ ) { //starting with current player loop thru each player
+                if (NETWORK) { 
+                }
+                // ask player if they wish to enter pay fee
+            }
+            for (int i = 0; i > cp; i++)// same for rest of players
+            {
+
+            }
         }
 
-        private void usepowerup(string power, Player p)
+        private void usepowerup(string power, Player p,int die)
         {
             switch (power) {
                 case "Coin":
                     if (p.racer.name == "Mario")
-                    {//collect 3 or move up to 3
-
+                    {
+                        //collect 3 or add 3 to number die roll
                     }
                     else if (p.racer.name == "Rosalina")
                     {
@@ -167,7 +183,8 @@ namespace Monopoly__Mario_Kart_
                         // take one from every other player
                         foreach (Player pl in players) {
                             pl.coins -= 1;
-                            if (pl.coins < 0) { 
+                            if (pl.coins < 0) {
+                                repo(pl);
                                 //TODO: check if player is below 0 coins after subtracting and request input to sell property to make up the coins
                             }
                         }
@@ -182,41 +199,170 @@ namespace Monopoly__Mario_Kart_
                     } else if (p.racer.name == "Luigi") {
 
                     } else {
-
+                        //place banana in path (anyspace from start pos to startpos + die roll)
                     }
                         break;
                 case "Green Shell"://yoshi shyguy
                     if (p.racer.name == "Yoshi") {
                         //player in front -3 yoshi +3
                     } else if (p.racer.name == "Shy Guy") { 
-                    
+                        // player in front and behind drop 3
                     } else {
-                    
+                        //player in front drop 3 if tie current player pick
                     }
                     break; 
                 case "Lightning"://toad metalmario
-                    if (p.racer.name == "Toad") { 
-                    
-                    } else if (p.racer.name == "Metal Mario") {
-                    
-                    } else {
-                        foreach (Player pl in players) {
-                            if (pl != p) { 
-                                
+                    foreach (Player pl in players)
+                    {
+                        if (pl != p)
+                        {
+                            pl.coins -= 1;
+                            if (pl.coins < 0)
+                            {
+                                repo(pl);
+                            }
+                            Board[pl.boardposition].coins++;
+                        }
+                    }
+                    if (p.racer.name == "Toad") {
+                        p.coins--;
+                        Board[p.boardposition].coins++;
+                        //add number of players coins to toad
+                        p.coins += players.Count;
+                        // take one from every player
+                        foreach (Player pl in players)
+                        {
+                            pl.coins -= 1;
+                            if (pl.coins < 0)
+                            {
+                                repo(pl);
                             }
                         }
+                    } else if (p.racer.name == "Metal Mario") {
+                        //roll number die again and move
+                        int r = rollnumber();
+                        moveplayer(r, p);
                     }
                     break;
                 case "Blue Shell"://bowser peach
                     if (p.racer.name == "Bowser") {
-                    
+                        //non bowser player with most coins drops 3 
+                        //others drop 1 
                     } else if (p.racer.name == "Princess Peach") { 
-                    
+                        //choose 2 players to drop 3
                     } else {
-                    
+                        //choose player to drop 3
                     }
                     break;
             }
+        }
+
+        private void moveplayer(int r, Player currentplayer)
+        {
+            currentplayer.boardposition += r;
+            if (currentplayer.boardposition >= Board.Count) {
+                PASSGO = true;
+                currentplayer.boardposition -= Board.Count;
+            }
+            switch (Board[currentplayer.boardposition].type) { 
+            case "Property":
+                    // check the name
+                    //check if proprty is avalible
+                    //buy/auction if avalible
+                    //give rent to owner is already owned
+                    if (Properties.Any(n => n.name == Board[currentplayer.boardposition].name))//check if property is in the banks list of properties
+                    {
+                        //request if u want to buy/auction it
+                        bool buy = buyorauction();
+                        //pay amount 
+                        //move property to playes list of properties
+                        foreach (Property property in Properties)
+                        { //find property in list of banks properties
+                            if (property.name == Board[currentplayer.boardposition].name)
+                            {
+                                if (buy)
+                                {
+                                    if (currentplayer.coins > property.cost)
+                                    {
+                                        currentplayer.coins -= property.cost;//charge player
+                                        currentplayer.properties.Add(property);//add property to players inventory
+                                        Properties.Remove(property);//remove from banks properties
+                                    }
+                                }
+                                else
+                                {
+                                    auction(property);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    { //find who owns property and pay rent thats aplicable
+                        foreach (Player pl in players)
+                        {
+                            foreach (Property property in pl.properties)
+                            {
+                                if (Board[currentplayer.boardposition].name == property.name)
+                                {
+                                    if (pl.properties.Any(n => n.name == property.set))//check if they have the other member of the set and charage set price if they do
+                                    {
+                                        currentplayer.coins -= property.setrent;
+                                        pl.coins += property.setrent;
+                                    }
+                                    else
+                                    {// charge standard rent
+                                        currentplayer.coins -= property.rent;
+                                        pl.coins += property.rent;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            case "Thwomp":
+                    currentplayer.coins -= 2;
+                    Board[currentplayer.boardposition].coins += 2;
+                break;
+            case "GO":
+                break;
+            case "Boost":
+                moveplayer(rollnumber(), currentplayer);
+                break;
+            case "Item":
+                currentplayer.coins += rollnumber();
+                break;
+            case "Super Star":
+                    superstar(currentplayer);
+                break;
+            case "Jail":
+                break;
+            case "Free Parking":
+                break;
+            case "GO to Jail":
+                currentplayer.jail = true;
+                break;
+            }
+        }
+
+        private void auction(Property property)
+        {
+            //TODO: Implement Auctions
+        }
+
+        private bool buyorauction()
+        {
+            //TODO: Implement input for auctions
+            return true;
+        }
+
+        private void superstar(Player p)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void repo(Player pl)
+        {
+            //TODO: check sell properties etc
         }
 
         private int rollnumber()
@@ -268,7 +414,7 @@ namespace Monopoly__Mario_Kart_
             //select character
             selectracerplayer(i);
             //select number of opponenets
-            //netwokring?
+            
 
         }
 
@@ -291,7 +437,6 @@ namespace Monopoly__Mario_Kart_
             players.Add(new Player(characters[r],id,false));
             //remove from list so i can tell what characters are unselected
             characters.RemoveAt(r);
-            throw new NotImplementedException();
         }
 
         private void characterselectbtn_Click(object sender, EventArgs e)

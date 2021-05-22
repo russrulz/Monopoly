@@ -22,5 +22,6 @@ namespace Monopoly__Mario_Kart_
                 this.setrent = setrent;
                 this.set = set;
             }
+            
     }
 }
