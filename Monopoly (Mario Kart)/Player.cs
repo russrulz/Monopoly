@@ -29,5 +29,23 @@ namespace Monopoly__Mario_Kart_
             this.skippower = false;
             }
 
+        public override string ToString() {
+            string str = "";
+            str = str + "Racer: " + racer.name + ";";
+            str = str + "Races Won : ";
+            foreach (Race r in races) {
+                str = str + r.name + ",";
+            }
+            str =str + ";";
+            str = str + "Property owned :";
+            foreach(Property p in properties)
+            {
+                str = str + p.name + ",";
+            }
+            str = str + ";";
+            str = str + "Coins: " + coins;
+            return str;
+        }
+
     }
 }

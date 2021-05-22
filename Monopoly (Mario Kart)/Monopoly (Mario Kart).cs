@@ -108,7 +108,7 @@ namespace Monopoly__Mario_Kart_
         private void Main() {
             int laps = 0;
             int currentplayer = 0;
-            while (Races.Count > 0) { 
+            while (laps < 8) { 
 
                 if ( NETWORK ) {
                     if (HOST)
@@ -142,30 +142,67 @@ namespace Monopoly__Mario_Kart_
                     players[currentplayer].coins += 2;
                     startrace(laps,currentplayer);
                     laps++;
+                    PASSGO = false;
                 }
                 //increments 'laps' when someone passes go and start the race with the racenumber of 'laps'
                 //end turn
                 currentplayer++;//move to next player for next turn
-                if (currentplayer > players.Count){//if the list of players has gone around go to the start of the list
+                if (currentplayer >= players.Count){//if the list of players has gone around go to the start of the list
                     currentplayer = 0;
                 }
             }
-            calculate_winner();
-            resetgame();
+
+            MessageBox.Show("Winner is : " + calculate_winner());
+            foreach (Player p in players) {
+                Console.WriteLine(p);
+            }
+           // resetgame();
         }
 
         private void startrace(int laps,int cp)
         {
             Race r = Races[laps];
-            for (int i = cp; i > players.Count;  i++ ) { //starting with current player loop thru each player
+            List<Player> entrants = new List<Player>();
+            for (int i = cp; i < players.Count;  i++ ) { //starting with current player loop thru each player
                 if (NETWORK) { 
+                }
+                if (players[i].PC && !players[i].jail) {//if player is pc and not in jail check if they can afford and join
+                    //if (players[i].coins >= r.entrycost)
+                    //{
+                        players[i].coins -= r.entrycost;
+                        entrants.Add(players[i]);
+                    //}
                 }
                 // ask player if they wish to enter pay fee
             }
-            for (int i = 0; i > cp; i++)// same for rest of players
+            for (int i = 0; i < cp; i++)// same for rest of players
             {
-
+                if (NETWORK)
+                {
+                }
+                if (players[i].PC && !players[i].jail)
+                {//if player is pc and not in jail check if they can afford and join
+                 //TODO: join checks
+                 //if (players[i].coins >= r.entrycost)
+                 //{
+                    players[i].coins -= r.entrycost;
+                        entrants.Add(players[i]);
+                 //}
+                }
             }
+
+            //complete race
+            List<int> rolls = new List<int>();
+            foreach (Player p in entrants) {
+                rolls.Add(rollnumber());
+            }
+                int firstindex = rolls.IndexOf(rolls.Max());
+                rolls.RemoveAt(firstindex);
+                int secondindex = rolls.IndexOf(rolls.Max());
+                rolls.RemoveAt(secondindex);
+                int thridindex = rolls.IndexOf(rolls.Max());
+                entrants[firstindex].races.Add(Races[laps]);
+            //TODO: special rewards of cards
         }
 
         private void usepowerup(string power, Player p,int die)
@@ -201,6 +238,10 @@ namespace Monopoly__Mario_Kart_
 
                     } else {
                         //place banana in path (anyspace from start pos to startpos + die roll)
+                        if (p.PC) { placebanana(p.boardposition); }
+                        else {//get input from player
+                              //
+                        }
                     }
                         break;
                 case "Green Shell"://yoshi shyguy
@@ -258,6 +299,12 @@ namespace Monopoly__Mario_Kart_
             }
         }
 
+        private void placebanana(int boardposition)
+        {
+            //check how many banana exist?
+            Board[boardposition].banana = true;
+        }
+
         private void moveplayer(int r, Player p)
         {
             p.boardposition += r;
@@ -271,28 +318,31 @@ namespace Monopoly__Mario_Kart_
                     //check if proprty is avalible
                     //buy/auction if avalible
                     //give rent to owner is already owned
-                    if (Properties.Any(n => n.name == Board[p.boardposition].name))//check if property is in the banks list of properties
+                   // if (!Properties.Any(n => n.name == Board[p.boardposition].name))//check if property is in the banks list of properties
+                   if(checkproperty(Board[p.boardposition].name))
                     {
                         //request if u want to buy/auction it
                         bool buy = buyorauction();
                         //pay amount 
                         //move property to playes list of properties
-                        foreach (Property property in Properties)
+                        for(int i =0; i<Properties.Count; i++)
                         { //find property in list of banks properties
-                            if (property.name == Board[p.boardposition].name)
+                            if (Properties[i].name == Board[p.boardposition].name)
                             {
-                                if (buy)
+                                if (p.PC)
                                 {
-                                    if (p.coins > property.cost)
-                                    {
-                                        p.coins -= property.cost;//charge player
-                                        p.properties.Add(property);//add property to players inventory
-                                        Properties.Remove(property);//remove from banks properties
-                                    }
+                                   // if (p.coins >= Properties[i].cost)
+                                  //  {
+                                        Buyproperty(p, Properties[i]);
+                                    //}
+                                }
+                                else if (buy)
+                                {
+                                    Buyproperty(p, Properties[i]);
                                 }
                                 else
                                 {
-                                    auction(property);
+                                    auction(Properties[i]);
                                 }
                             }
                         }
@@ -324,7 +374,7 @@ namespace Monopoly__Mario_Kart_
                     p.coins -= 2;
                     Board[p.boardposition].coins += 2;
                 break;
-            case "GO":
+            case "GO": //do nothing as it is handled by the pass go code
                 break;
             case "Boost":
                 moveplayer(rollnumber(), p);
@@ -332,9 +382,9 @@ namespace Monopoly__Mario_Kart_
             case "Item":
                 p.coins += rollnumber();
                 break;
-            case "Super Star":
+            case "Super Star"://use chracters superstar ability
                     superstar(p);
-                break;
+                break;//do nothing just visiting jail
             case "Jail":
                 break;
             case "Free Parking":
@@ -343,6 +393,24 @@ namespace Monopoly__Mario_Kart_
                 p.jail = true;
                 break;
             }
+        }
+
+        private bool checkproperty(string name)
+        {
+            foreach (Property prop in Properties) {
+                if (prop.name == name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void Buyproperty(Player p, Property property)
+        {
+                p.coins -= property.cost;//charge player
+                p.properties.Add(property);//add property to players inventory
+                Properties.Remove(property);//remove from banks properties            
         }
 
         private void auction(Property property)
@@ -371,7 +439,7 @@ namespace Monopoly__Mario_Kart_
                     break;
             case "Shy Guy"://, "Move up to 3 spaces forward or backward follow rules of space you land on"
                     //get a number from -3 to 3 from player
-                    moveplayer(requestinputnumber(),p);
+                    moveplayer(requestinputnumber(),p); 
                     break;
             case "Yoshi"://, "Collect all coins on the board"
                     foreach (Space s in Board) {
@@ -399,7 +467,7 @@ namespace Monopoly__Mario_Kart_
         private int requestinputnumber()
         {
             //TODO: get input
-            return 0;
+            return 3;
         }
 
         private void repo(Player pl)
@@ -437,6 +505,7 @@ namespace Monopoly__Mario_Kart_
                 score += c * 10;//award 10 points per set of 5 coins
                 if (score > winning_score)
                 {
+                    winning_score = score;
                     winner = pl;
                 }
             }
@@ -452,12 +521,24 @@ namespace Monopoly__Mario_Kart_
 
         private void startbtn_Click(object sender, EventArgs e){
 
-            int i = 1;
+            //int i = 1;
             //select character
-            selectracerplayer(i);
+            //selectracerplayer(i);
             //select number of opponenets
-            
+            for (int i =0; i < 4; i++)
+            {
+                selectracerpc(i);
+            }
+            Main();
+        }
 
+        private void selectracerpc(int i)
+        {
+            Random rand = new Random();
+            int ra = rand.Next(rand.Next(characters.Count - 1));
+            Racer r =characters[ra];
+            players.Add(new Player(r, i, true));
+            characters.Remove(r);
         }
 
         private void selectracerplayer(int id)
@@ -485,6 +566,11 @@ namespace Monopoly__Mario_Kart_
         {
             //open chracter select form and retunr the clicked chracter?
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+          this.Close();
         }
     }
 }
