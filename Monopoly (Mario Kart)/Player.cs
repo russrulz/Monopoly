@@ -31,18 +31,18 @@ namespace Monopoly__Mario_Kart_
 
         public override string ToString() {
             string str = "";
-            str = str + "Racer: " + racer.name + "; ";
-            str = str + "Races Won : ";
+            str = str + "Racer: " + racer.name + System.Environment.NewLine;
+            str = str + "Races Won : "+ System.Environment.NewLine;
             foreach (Race r in races) {
-                str = str + r.name + ",";
+                str = str + r.name + System.Environment.NewLine;
             }
-            str =str + "; ";
-            str = str + "Property owned :";
+            str =str + System.Environment.NewLine;
+            str = str + "Property owned :" + System.Environment.NewLine;
             foreach(Property p in properties)
             {
-                str = str + p.name + ",";
+                str = str + p.name + System.Environment.NewLine;
             }
-            str = str + "; ";
+            str = str + System.Environment.NewLine;
             str = str + "Coins: " + coins;
             return str;
         }

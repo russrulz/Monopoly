@@ -105,6 +105,7 @@ namespace Monopoly__Mario_Kart_
         List<Racer> characters = new List<Racer>();
         List<Player> players = new List<Player>();
         List<Space> Board = new List<Space>();
+        Random rand = new Random();// set randomizer up 
         private void Main() {
             int laps = 0;
             int currentplayer = 0;
@@ -151,12 +152,13 @@ namespace Monopoly__Mario_Kart_
                     currentplayer = 0;
                 }
             }
-
-            MessageBox.Show("Winner is : " + calculate_winner());
-            foreach (Player p in players) {
+            foreach (Player p in players)
+            {
                 Console.WriteLine(p);
             }
-           // resetgame();
+            MessageBox.Show("Winner is : " + System.Environment.NewLine + calculate_winner());
+
+            resetgame();
         }
 
         private void startrace(int laps,int cp)
@@ -307,10 +309,31 @@ namespace Monopoly__Mario_Kart_
 
         private void moveplayer(int r, Player p)
         {
-            p.boardposition += r;
-            if (p.boardposition >= Board.Count) {
-                PASSGO = true;
-                p.boardposition -= Board.Count;
+            if (r > 0)
+            {
+                for (int i = p.boardposition; i < p.boardposition + r; i++)
+                {
+                    int j = i;
+                    if (j >= Board.Count)
+                    {
+                        j -= Board.Count;
+                    }
+                    p.coins += Board[j].coins;//collect coins
+                    Board[j].coins = 0;
+                    if (Board[j].banana)
+                    {
+
+                        r = i - p.boardposition;//set board pos to be where banana was hit
+                        Board[j].banana = false;
+                    }
+
+                } // something is broken?
+                p.boardposition += r;
+                if (p.boardposition >= Board.Count)
+                {
+                    PASSGO = true;
+                    p.boardposition -= Board.Count;
+                }
             }
             switch (Board[p.boardposition].type) { 
             case "Property":
@@ -442,16 +465,39 @@ namespace Monopoly__Mario_Kart_
                     moveplayer(requestinputnumber(),p); 
                     break;
             case "Yoshi"://, "Collect all coins on the board"
-                    foreach (Space s in Board) {
-                        p.coins += s.coins;
-                        s.coins = 0;
+                    foreach (Space sp in Board) {
+                        p.coins += sp.coins;
+                        sp.coins = 0;
                     }
                     break;
             case "Donkey Kong"://, "You may place 1 bannana on up to 2 properties you own"
+                    if (p.PC) {
+                        if (p.properties.Count >= 2) { 
+                            //pick 2 randomly?
+                            //place banana on 2 
+                        }
+                            }
                     break;
            case "Rosalina"://, "You may move to the next superstar space collecting any coins you pass"
+                    
+                    for (int i=0; true; i++) {
+                        int r = p.boardposition + i;
+                        if (r >= Board.Count)
+                        {
+                            r -= Board.Count;
+                        }
+                        p.coins += Board[r].coins;//collect coins on spaces
+                        Board[r].coins = 0;                            
+                        if (Board[r].type == "Super Star") {
+                            p.boardposition = r;
+                            break;//break the loop when superstar space is reached
+                        }
+                    }
                     break;
            case"Luigi"://, "You may move the the least expensive unowned property and buy or auction it"
+                    /*Space s = new Space("Property", Properties[0].name);
+                    p.boardposition = Board.IndexOf(s);//not geting expected result
+                    moveplayer(0, p);*/
                     break;
            case "Toad"://, "You may drop up to 5 coins to move that many spaces"
                     break;
@@ -477,16 +523,14 @@ namespace Monopoly__Mario_Kart_
 
         private int rollnumber()
         {
-            var rand = new Random();
-            int i = rand.Next(Dice.Length);
-            return Dice[i];
+            int rnum = rand.Next(Dice.Length);
+            return Dice[rnum];
         }
 
         private string rollpowerup()
         {
-            var rand = new Random();
-            int i = rand.Next(Powerdice.Length);
-            return Powerdice[i];
+            int rnum = rand.Next(Powerdice.Length);
+            return Powerdice[rnum];
         }
 
         private Player calculate_winner()
@@ -516,7 +560,12 @@ namespace Monopoly__Mario_Kart_
         private void resetgame()
         {
             //clear all lists and repopulate
-            throw new NotImplementedException();
+            Races.Clear(); 
+            Properties.Clear(); 
+            characters.Clear();
+            players.Clear();
+            Board.Clear();
+            SetupGame();
         }
 
         private void startbtn_Click(object sender, EventArgs e){
@@ -534,8 +583,7 @@ namespace Monopoly__Mario_Kart_
 
         private void selectracerpc(int i)
         {
-            Random rand = new Random();
-            int ra = rand.Next(rand.Next(characters.Count - 1));
+            int ra = rand.Next(characters.Count);
             Racer r =characters[ra];
             players.Add(new Player(r, i, true));
             characters.Remove(r);
@@ -571,6 +619,18 @@ namespace Monopoly__Mario_Kart_
         private void button1_Click(object sender, EventArgs e)
         {
           this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            for (int iter = 0; iter < 1000; iter++) { 
+
+                int num = rollnumber();
+                string power = rollpowerup();
+                string n = "number die: " + num + " Power up: " + power;
+                //MessageBox.Show(n);
+                Console.WriteLine(n);
+            }
         }
     }
 }
