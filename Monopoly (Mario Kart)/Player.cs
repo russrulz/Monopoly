@@ -16,6 +16,7 @@ namespace Monopoly__Mario_Kart_
             public readonly int id;
             public readonly bool PC;
             public bool skippower;
+        public int extramove;
             public Player(Racer racer, int id, bool PC)
             {
                 this.racer = racer;
@@ -26,7 +27,8 @@ namespace Monopoly__Mario_Kart_
                 this.jail = false;
                 this.properties = new List<Property>();
                 this.PC = PC;
-            this.skippower = false;
+                this.skippower = false;
+                this.extramove = 0;
             }
 
         public override string ToString() {

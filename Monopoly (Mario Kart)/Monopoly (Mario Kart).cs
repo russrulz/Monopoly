@@ -131,7 +131,7 @@ namespace Monopoly__Mario_Kart_
                         string power = rollpowerup();
                         int move = rollnumber();
                         if(! players[currentplayer].skippower)
-                            usepowerup(power,players[currentplayer],move);
+                            usepowerup(power,players[currentplayer]);
                         moveplayer(move,players[currentplayer]);
                     }
                     else {// wait for player input 
@@ -207,13 +207,26 @@ namespace Monopoly__Mario_Kart_
             //TODO: special rewards of cards
         }
 
-        private void usepowerup(string power, Player p,int die)
+        private void usepowerup(string power, Player p)
         {
             switch (power) {
                 case "Coin":
                     if (p.racer.name == "Mario")
                     {
                         //collect 3 or add 3 to number die roll
+                        if (p.PC)
+                        {
+                            int i = rand.Next(0, 3);
+                            p.extramove += i;
+                            if (i == 0)
+                            {
+                                p.coins += 3;
+                            }
+                        }
+                        else { 
+                            //if extra move or coins
+                            //if move how many
+                        }
                     }
                     else if (p.racer.name == "Rosalina")
                     {
@@ -221,10 +234,10 @@ namespace Monopoly__Mario_Kart_
                         //add number of players to rosalina
                         p.coins += players.Count;
                         // take one from every other player
-                        foreach (Player pl in players) {
-                            pl.coins -= 1;
-                            if (pl.coins < 0) {
-                                repo(pl);
+                        foreach (Player play in players) {
+                            play.coins -= 1;
+                            if (play.coins < 0) {
+                                repo(play);
                                 //TODO: check if player is below 0 coins after subtracting and request input to sell property to make up the coins
                             }
                         }
@@ -235,24 +248,39 @@ namespace Monopoly__Mario_Kart_
                     break;
                 case "Bannana"://dk luigi
                     if (p.racer.name == "Donkey Kong") {
+                        //remove up to 3 banana's gain +3 per banana
 
                     } else if (p.racer.name == "Luigi") {
+                        //place banana on property
+                        if (p.PC) {
+                            if(p.properties.Count > 0)
+                            {
+                                int r = rand.Next(p.properties.Count);
+                                placebanana(FindPropertyBoard(p.properties[r].name));
+                            }
+                        }
 
                     } else {
                         //place banana in path (anyspace from start pos to startpos + die roll)
                         if (p.PC) { placebanana(p.boardposition); }
                         else {//get input from player
-                              //
+                              //place banana in x or x + die roll where x is starting position
                         }
                     }
                         break;
                 case "Green Shell"://yoshi shyguy
+                    Player p1 = findplayer("F",p);
+                    p1.coins -= 3;
+                    Board[p1.boardposition].coins += 3;
                     if (p.racer.name == "Yoshi") {
                         //player in front -3 yoshi +3
-                    } else if (p.racer.name == "Shy Guy") { 
+                        p.coins += 3;
+                        Board[p1.boardposition].coins -= 3;//pickup coins droped
+                    } else if (p.racer.name == "Shy Guy") {
                         // player in front and behind drop 3
-                    } else {
-                        //player in front drop 3 if tie current player pick
+                        Player p2 = findplayer("B", p);
+                        p2.coins -= 3;
+                        Board[p2.boardposition].coins += 3;
                     }
                     break; 
                 case "Lightning"://toad metalmario
@@ -292,13 +320,102 @@ namespace Monopoly__Mario_Kart_
                     if (p.racer.name == "Bowser") {
                         //non bowser player with most coins drops 3 
                         //others drop 1 
-                    } else if (p.racer.name == "Princess Peach") { 
+                        int t = 0;//position in list of players of player with most coins
+                        int most = 0;//amount of coins highest coin count has
+                        for (int i = 0; i < players.Count; i++) {
+                            if (players[i] != p) {
+                                if (players[i].coins > most)
+                                {
+                                    t = i;
+                                }
+                                players[i].coins--;
+                                Board[players[i].boardposition].coins++;
+                            }
+                        }
+                        players[t].coins -= 2;
+                        Board[players[t].boardposition].coins += 2;
+                    } else if (p.racer.name == "Princess Peach") {
                         //choose 2 players to drop 3
+                        if (p.PC)
+                        {
+                            Player pl = randomplayer(p, null);
+                            pl.coins -= 3;
+                            Board[pl.boardposition].coins += 3;
+                            Player p2 = randomplayer(p, pl);
+                            p2.coins -= 3;
+                            Board[p2.boardposition].coins += 3;
+                        }
                     } else {
                         //choose player to drop 3
+                        if (p.PC)
+                        {
+                            Player pl = randomplayer(p,null);
+                            pl.coins -= 3;
+                            Board[pl.boardposition].coins += 3;
+                        }
                     }
                     break;
             }
+        }
+        /// <summary>
+        /// Find A random player that is not p or p2
+        /// </summary>
+        /// <param name="p">current player normally</param>
+        /// <param name="p2">second player that isn't wanted to be hit again</param>
+        /// <returns>a random player from the list of players</returns>
+        private Player randomplayer(Player p,Player p2)
+        {
+            Player pl = players[rand.Next(players.Count)];
+            while (pl == p || pl == p2)
+            {
+                pl = players[rand.Next(players.Count)];
+            }
+
+            return pl;
+        }
+
+        /// <summary>
+        /// Finds the closest player in a given direction
+        /// </summary>
+        /// <param name="direction">Direction to search "F" for foward or "B" for backwards</param>
+        /// <param name="p">player to search from (normally current player)</param>
+        /// <returns>Player closest to p</returns>
+        private Player findplayer(string direction,Player p) {
+            //int closest = players.FindIndex(p);
+
+            int closest = -1;
+            for(int i =0; i < players.Count; i++)
+            {
+                if (players[i] == p) {
+                    closest = i;
+                }
+            }
+            if (closest == -1)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < players.Count; i++) { 
+                if(players[i] != p)
+                {
+                    if (direction == "F")
+                    {
+                        if ((players[i].boardposition + Board.Count) % Board.Count >= (players[closest].boardposition + Board.Count) % Board.Count)
+                        {//board wrap 
+                            closest = i;
+                        }
+                    }
+                    else if (direction == "B")
+                    {
+                        if ((players[i].boardposition + Board.Count) % Board.Count <= (players[closest].boardposition + Board.Count) % Board.Count)
+                        {
+                            closest = i;
+                        }
+                    }
+                    else return null;
+                }
+            }
+            return players[closest];
         }
 
         private void placebanana(int boardposition)
@@ -309,6 +426,8 @@ namespace Monopoly__Mario_Kart_
 
         private void moveplayer(int r, Player p)
         {
+            r += p.extramove;
+            p.extramove = 0;
             if (r > 0)
             {
                 for (int i = p.boardposition; i < p.boardposition + r; i++)
@@ -429,6 +548,18 @@ namespace Monopoly__Mario_Kart_
             return false;
         }
 
+        private int FindPropertyBoard(string name)
+        {
+            for(int i=0; i<Board.Count; i++)
+            {
+                if(Board[i].name == name)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         private void Buyproperty(Player p, Property property)
         {
                 p.coins -= property.cost;//charge player                
@@ -472,8 +603,13 @@ namespace Monopoly__Mario_Kart_
                     break;
             case "Donkey Kong"://, "You may place 1 bannana on up to 2 properties you own"
                     if (p.PC) {
-                        if (p.properties.Count >= 2) { 
+                        if (p.properties.Count >= 2) {
                             //pick 2 randomly?
+                            //TODO: Limit banana count total
+                            int prop1 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
+                            int prop2 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
+                            placebanana(prop1);
+                            placebanana(prop2);
                             //place banana on 2 
                         }
                             }
@@ -495,13 +631,16 @@ namespace Monopoly__Mario_Kart_
                     }
                     break;
            case"Luigi"://, "You may move the the least expensive unowned property and buy or auction it"
-                    /*Space s = new Space("Property", Properties[0].name);
-                    p.boardposition = Board.IndexOf(s);//not geting expected result
-                    moveplayer(0, p);*/
+                    if (Properties.Count > 0)
+                    {
+                        p.boardposition = FindPropertyBoard(Properties[0].name);
+                        moveplayer(0, p);
+                    }
                     break;
            case "Toad"://, "You may drop up to 5 coins to move that many spaces"
                     break;
             case "Princess Peach"://, "At the end of your turn roll powerup die and coplete the action"
+                    usepowerup(rollpowerup(),p);
                     break;
             case "Mario"://, "Collect 3 coins then roll number die and move again"
                     p.coins += 3;
