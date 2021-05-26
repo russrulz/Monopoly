@@ -33,6 +33,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,16 +64,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Player.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Race.cs" />
+    <Compile Include="Monopoly %28Mario Kart%29.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Monopoly %28Mario Kart%29.Designer.cs">
+      <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Character Select.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Character Select.Designer.cs">
+      <DependentUpon>Character Select.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Racer.cs" />
+    <Compile Include="Space.cs" />
+    <EmbeddedResource Include="Character Select.resx">
+      <DependentUpon>Character Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Monopoly %28Mario Kart%29.resx">
+      <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -75,6 +107,32 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\bowserback.png" />
+    <Content Include="Images\Bowserfront.png" />
+    <Content Include="Images\donkeykongback.png" />
+    <Content Include="Images\donkeykongfront.png" />
+    <Content Include="Images\Luigiback.png" />
+    <Content Include="Images\Luigifront.png" />
+    <Content Include="Images\marioback.png" />
+    <Content Include="Images\mariofront.png" />
+    <Content Include="Images\metalmarioback.png" />
+    <Content Include="Images\metalmariofront.png" />
+    <Content Include="Images\Peachback.png" />
+    <Content Include="Images\Peachfront.png" />
+    <Content Include="Images\rosalinaback.png" />
+    <Content Include="Images\rosilinafront.png" />
+    <Content Include="Images\Rules1.png" />
+    <Content Include="Images\Rules2.png" />
+    <Content Include="Images\Rules3.png" />
+    <Content Include="Images\Rules4.png" />
+    <Content Include="Images\shyguyback.png" />
+    <Content Include="Images\Shyguyfront.png" />
+    <Content Include="Images\toadback.png" />
+    <Content Include="Images\toadfront.png" />
+    <Content Include="Images\yoshiback.png" />
+    <Content Include="Images\yoshifront.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
