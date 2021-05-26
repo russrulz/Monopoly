@@ -105,6 +105,7 @@ namespace Monopoly__Mario_Kart_
         List<Racer> characters = new List<Racer>();
         List<Player> players = new List<Player>();
         List<Space> Board = new List<Space>();
+        List<int> Bananas = new List<int>();
         Random rand = new Random();// set randomizer up 
         private void Main() {
             int laps = 0;
@@ -249,6 +250,20 @@ namespace Monopoly__Mario_Kart_
                 case "Bannana"://dk luigi
                     if (p.racer.name == "Donkey Kong") {
                         //remove up to 3 banana's gain +3 per banana
+                        if (p.PC)
+                        {
+                            for(int i =0; i < 3; i++)
+                            {
+                                int ba = rand.Next(Bananas.Count);
+                                if (Board[ba].banana) {//check there is actually a banana
+                                    Board[ba].banana = false;
+                                    Bananas.Remove(ba);
+                                    p.coins += 3;
+                                }
+
+
+                            }
+                        }
 
                     } else if (p.racer.name == "Luigi") {
                         //place banana on property
@@ -262,9 +277,13 @@ namespace Monopoly__Mario_Kart_
 
                     } else {
                         //place banana in path (anyspace from start pos to startpos + die roll)
-                        if (p.PC) { placebanana(p.boardposition); }
-                        else {//get input from player
-                              //place banana in x or x + die roll where x is starting position
+                        if (p.PC)
+                        {
+                            placebanana(p.boardposition);
+                        }
+                        else
+                        {//get input from player
+                         //place banana in x or x + die roll where x is starting position
                         }
                     }
                         break;
@@ -422,6 +441,7 @@ namespace Monopoly__Mario_Kart_
         {
             //check how many banana exist?
             Board[boardposition].banana = true;
+            Bananas.Add(boardposition);
         }
 
         private void moveplayer(int r, Player p)
@@ -443,6 +463,7 @@ namespace Monopoly__Mario_Kart_
                     {
 
                         r = i - p.boardposition;//set board pos to be where banana was hit
+                        Bananas.Remove(j);
                         Board[j].banana = false;
                     }
 
@@ -583,25 +604,28 @@ namespace Monopoly__Mario_Kart_
             switch (p.racer.name)
             {
                 case "Bowser": //"Steal 4 Coins"
+                    Player pl = randomplayer(p, null);
+                    pl.coins -= 4;
+                    p.coins += 4;
                     break;
                 case "Metal Mario":// "All other players skip next powerup die roll"
-                    foreach (Player pl in players) {
-                        if (pl != p) {
-                            pl.skippower = true;
+                    foreach (Player pla in players) {
+                        if (pla != p) {
+                            pla.skippower = true;
                         }
                     }
                     break;
-            case "Shy Guy"://, "Move up to 3 spaces forward or backward follow rules of space you land on"
+                case "Shy Guy"://, "Move up to 3 spaces forward or backward follow rules of space you land on"
                     //get a number from -3 to 3 from player
-                    moveplayer(requestinputnumber(),p); 
+                    moveplayer(requestinputnumber(), p);
                     break;
-            case "Yoshi"://, "Collect all coins on the board"
+                case "Yoshi"://, "Collect all coins on the board"
                     foreach (Space sp in Board) {
                         p.coins += sp.coins;
                         sp.coins = 0;
                     }
                     break;
-            case "Donkey Kong"://, "You may place 1 bannana on up to 2 properties you own"
+                case "Donkey Kong"://, "You may place 1 bannana on up to 2 properties you own"
                     if (p.PC) {
                         if (p.properties.Count >= 2) {
                             //pick 2 randomly?
@@ -611,33 +635,43 @@ namespace Monopoly__Mario_Kart_
                             placebanana(prop1);
                             placebanana(prop2);
                             //place banana on 2 
+                        } else if (p.properties.Count > 0) {
+                            int prop1 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
+                            placebanana(prop1);
                         }
-                            }
+                    }
                     break;
-           case "Rosalina"://, "You may move to the next superstar space collecting any coins you pass"
-                    
-                    for (int i=0; true; i++) {
+                case "Rosalina"://, "You may move to the next superstar space collecting any coins you pass"
+
+                    for (int i = 0; true; i++) {
                         int r = p.boardposition + i;
                         if (r >= Board.Count)
                         {
                             r -= Board.Count;
                         }
                         p.coins += Board[r].coins;//collect coins on spaces
-                        Board[r].coins = 0;                            
+                        Board[r].coins = 0;
                         if (Board[r].type == "Super Star") {
                             p.boardposition = r;
                             break;//break the loop when superstar space is reached
                         }
                     }
                     break;
-           case"Luigi"://, "You may move the the least expensive unowned property and buy or auction it"
+                case "Luigi"://, "You may move the the least expensive unowned property and buy or auction it"
                     if (Properties.Count > 0)
                     {
                         p.boardposition = FindPropertyBoard(Properties[0].name);
                         moveplayer(0, p);
                     }
                     break;
-           case "Toad"://, "You may drop up to 5 coins to move that many spaces"
+                case "Toad"://, "You may drop up to 5 coins to move that many spaces"
+                    if (p.PC)
+                    {
+                        int a = rand.Next(0,5);
+                        p.coins -= a;
+                        Board[p.boardposition].coins += a;
+                        moveplayer(a, p);
+                    }
                     break;
             case "Princess Peach"://, "At the end of your turn roll powerup die and coplete the action"
                     usepowerup(rollpowerup(),p);
