@@ -127,7 +127,8 @@ namespace Monopoly__Mario_Kart_
                 }
                 else
                 {
-                    if (players[currentplayer].PC)
+                    if (players[currentplayer].jail) { }
+                    else if (players[currentplayer].PC)
                     { //if current player is pc do turn
                         string power = rollpowerup();
                         int move = rollnumber();
@@ -167,16 +168,18 @@ namespace Monopoly__Mario_Kart_
             Race r = Races[laps];
             List<Player> entrants = new List<Player>();
             for (int i = cp; i < players.Count;  i++ ) { //starting with current player loop thru each player
-                if (NETWORK) { 
-                }
+                if (NETWORK) { }
                 if (players[i].PC && !players[i].jail) {//if player is pc and not in jail check if they can afford and join
                     //if (players[i].coins >= r.entrycost)
                     //{
                         players[i].coins -= r.entrycost;
                         entrants.Add(players[i]);
                     //}
+                }else if (!players[i].jail)
+                {
+                    // ask player if they wish to enter pay fee if they aren't in jail
+
                 }
-                // ask player if they wish to enter pay fee
             }
             for (int i = 0; i < cp; i++)// same for rest of players
             {
@@ -794,16 +797,5 @@ namespace Monopoly__Mario_Kart_
           this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            for (int iter = 0; iter < 1000; iter++) { 
-
-                int num = rollnumber();
-                string power = rollpowerup();
-                string n = "number die: " + num + " Power up: " + power;
-                //MessageBox.Show(n);
-                Console.WriteLine(n);
-            }
-        }
     }
 }
