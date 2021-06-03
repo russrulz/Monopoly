@@ -93,7 +93,14 @@ namespace Monopoly__Mario_Kart_
             Board.Add(new Space("Super Star", ""));
             Board.Add(new Space("Property","Rainbow Road"));
 
-
+            display.Add(txtPlayer1);
+            display.Add(txtPlayer2);
+            display.Add(txtPlayer3);
+            display.Add(txtPlayer4);
+            display.Add(txtPlayer5);
+            display.Add(txtPlayer6);
+            display.Add(txtPlayer7);
+            display.Add(txtPlayer8);
         }
         public bool NETWORK = false;
         public bool HOST = false;
@@ -106,10 +113,12 @@ namespace Monopoly__Mario_Kart_
         List<Player> players = new List<Player>();
         List<Space> Board = new List<Space>();
         List<int> Bananas = new List<int>();
+        List<TextBox> display = new List<TextBox>();
         Random rand = new Random();// set randomizer up 
         private void Main() {
             int laps = 0;
             int currentplayer = 0;
+            draw();
             while (laps < 8) { 
 
                 if ( NETWORK ) {
@@ -153,6 +162,7 @@ namespace Monopoly__Mario_Kart_
                 if (currentplayer >= players.Count){//if the list of players has gone around go to the start of the list
                     currentplayer = 0;
                 }
+                draw();
             }
             foreach (Player p in players)
             {
@@ -161,6 +171,14 @@ namespace Monopoly__Mario_Kart_
             MessageBox.Show("Winner is : " + System.Environment.NewLine + calculate_winner());
 
             resetgame();
+        }
+
+        private void draw()
+        {
+            for (int i = 0; i < players.Count; i++) {
+                display[i].Text = players[i].ToString();
+            }
+            
         }
 
         private void startrace(int laps,int cp)
@@ -790,12 +808,17 @@ namespace Monopoly__Mario_Kart_
         {
             //open chracter select form and retunr the clicked chracter?
 
+            // Create a new instance of the Form2 class
+            Form2 settingsForm = new Form2();
+
+            // Show the settings form
+            settingsForm.Show();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
           this.Close();
         }
-
     }
 }

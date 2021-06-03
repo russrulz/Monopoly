@@ -31,15 +31,16 @@
             this.startbtn = new System.Windows.Forms.Button();
             this.characterselectbtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.grpBoard = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.txtPlayer1 = new System.Windows.Forms.TextBox();
+            this.txtPlayer2 = new System.Windows.Forms.TextBox();
+            this.txtPlayer4 = new System.Windows.Forms.TextBox();
+            this.txtPlayer3 = new System.Windows.Forms.TextBox();
+            this.txtPlayer6 = new System.Windows.Forms.TextBox();
+            this.txtPlayer5 = new System.Windows.Forms.TextBox();
+            this.txtPlayer8 = new System.Windows.Forms.TextBox();
+            this.txtPlayer7 = new System.Windows.Forms.TextBox();
+            this.pictureBoxBoard = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBoard)).BeginInit();
             this.SuspendLayout();
             // 
             // startbtn
@@ -75,129 +76,127 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // grpBoard
+            // txtPlayer1
             // 
-            this.grpBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtPlayer1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer1.Location = new System.Drawing.Point(629, 12);
+            this.txtPlayer1.Multiline = true;
+            this.txtPlayer1.Name = "txtPlayer1";
+            this.txtPlayer1.ReadOnly = true;
+            this.txtPlayer1.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer1.TabIndex = 4;
+            // 
+            // txtPlayer2
+            // 
+            this.txtPlayer2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer2.Location = new System.Drawing.Point(935, 12);
+            this.txtPlayer2.Multiline = true;
+            this.txtPlayer2.Name = "txtPlayer2";
+            this.txtPlayer2.ReadOnly = true;
+            this.txtPlayer2.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer2.TabIndex = 5;
+            // 
+            // txtPlayer4
+            // 
+            this.txtPlayer4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer4.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer4.Location = new System.Drawing.Point(935, 128);
+            this.txtPlayer4.Multiline = true;
+            this.txtPlayer4.Name = "txtPlayer4";
+            this.txtPlayer4.ReadOnly = true;
+            this.txtPlayer4.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer4.TabIndex = 7;
+            // 
+            // txtPlayer3
+            // 
+            this.txtPlayer3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer3.Location = new System.Drawing.Point(629, 128);
+            this.txtPlayer3.Multiline = true;
+            this.txtPlayer3.Name = "txtPlayer3";
+            this.txtPlayer3.ReadOnly = true;
+            this.txtPlayer3.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer3.TabIndex = 6;
+            // 
+            // txtPlayer6
+            // 
+            this.txtPlayer6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer6.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer6.Location = new System.Drawing.Point(935, 244);
+            this.txtPlayer6.Multiline = true;
+            this.txtPlayer6.Name = "txtPlayer6";
+            this.txtPlayer6.ReadOnly = true;
+            this.txtPlayer6.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer6.TabIndex = 9;
+            // 
+            // txtPlayer5
+            // 
+            this.txtPlayer5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer5.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer5.Location = new System.Drawing.Point(629, 244);
+            this.txtPlayer5.Multiline = true;
+            this.txtPlayer5.Name = "txtPlayer5";
+            this.txtPlayer5.ReadOnly = true;
+            this.txtPlayer5.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer5.TabIndex = 8;
+            // 
+            // txtPlayer8
+            // 
+            this.txtPlayer8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer8.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer8.Location = new System.Drawing.Point(935, 360);
+            this.txtPlayer8.Multiline = true;
+            this.txtPlayer8.Name = "txtPlayer8";
+            this.txtPlayer8.ReadOnly = true;
+            this.txtPlayer8.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer8.TabIndex = 11;
+            // 
+            // txtPlayer7
+            // 
+            this.txtPlayer7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPlayer7.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtPlayer7.Location = new System.Drawing.Point(629, 360);
+            this.txtPlayer7.Multiline = true;
+            this.txtPlayer7.Name = "txtPlayer7";
+            this.txtPlayer7.ReadOnly = true;
+            this.txtPlayer7.Size = new System.Drawing.Size(300, 110);
+            this.txtPlayer7.TabIndex = 10;
+            // 
+            // pictureBoxBoard
+            // 
+            this.pictureBoxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpBoard.AutoSize = true;
-            this.grpBoard.Location = new System.Drawing.Point(10, 10);
-            this.grpBoard.MaximumSize = new System.Drawing.Size(2400, 2400);
-            this.grpBoard.MinimumSize = new System.Drawing.Size(600, 600);
-            this.grpBoard.Name = "grpBoard";
-            this.grpBoard.Size = new System.Drawing.Size(600, 600);
-            this.grpBoard.TabIndex = 3;
-            this.grpBoard.TabStop = false;
-            this.grpBoard.Text = "groupBoxBoard";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox1.Location = new System.Drawing.Point(629, 12);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(300, 110);
-            this.textBox1.TabIndex = 4;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox2.Location = new System.Drawing.Point(935, 12);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(300, 110);
-            this.textBox2.TabIndex = 5;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox3.Location = new System.Drawing.Point(935, 128);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(300, 110);
-            this.textBox3.TabIndex = 7;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox4.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox4.Location = new System.Drawing.Point(629, 128);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(300, 110);
-            this.textBox4.TabIndex = 6;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox5.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox5.Location = new System.Drawing.Point(935, 244);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(300, 110);
-            this.textBox5.TabIndex = 9;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox6.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox6.Location = new System.Drawing.Point(629, 244);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(300, 110);
-            this.textBox6.TabIndex = 8;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox7.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox7.Location = new System.Drawing.Point(935, 360);
-            this.textBox7.Multiline = true;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(300, 110);
-            this.textBox7.TabIndex = 11;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox8.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.textBox8.Location = new System.Drawing.Point(629, 360);
-            this.textBox8.Multiline = true;
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(300, 110);
-            this.textBox8.TabIndex = 10;
+            this.pictureBoxBoard.BackgroundImage = global::Monopoly__Mario_Kart_.Properties.Resources.boardsmall;
+            this.pictureBoxBoard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBoxBoard.Location = new System.Drawing.Point(10, 10);
+            this.pictureBoxBoard.Name = "pictureBoxBoard";
+            this.pictureBoxBoard.Size = new System.Drawing.Size(600, 600);
+            this.pictureBoxBoard.TabIndex = 12;
+            this.pictureBoxBoard.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.grpBoard);
+            this.Controls.Add(this.pictureBoxBoard);
+            this.Controls.Add(this.txtPlayer8);
+            this.Controls.Add(this.txtPlayer7);
+            this.Controls.Add(this.txtPlayer6);
+            this.Controls.Add(this.txtPlayer5);
+            this.Controls.Add(this.txtPlayer4);
+            this.Controls.Add(this.txtPlayer3);
+            this.Controls.Add(this.txtPlayer2);
+            this.Controls.Add(this.txtPlayer1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.characterselectbtn);
             this.Controls.Add(this.startbtn);
             this.Name = "Form1";
-            this.Text = "Monopoly Gamer Mario Kart";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBoard)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,15 +207,15 @@
         private System.Windows.Forms.Button startbtn;
         private System.Windows.Forms.Button characterselectbtn;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.GroupBox grpBoard;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox txtPlayer1;
+        private System.Windows.Forms.TextBox txtPlayer2;
+        private System.Windows.Forms.TextBox txtPlayer4;
+        private System.Windows.Forms.TextBox txtPlayer3;
+        private System.Windows.Forms.TextBox txtPlayer6;
+        private System.Windows.Forms.TextBox txtPlayer5;
+        private System.Windows.Forms.TextBox txtPlayer8;
+        private System.Windows.Forms.TextBox txtPlayer7;
+        private System.Windows.Forms.PictureBox pictureBoxBoard;
     }
 }
 
