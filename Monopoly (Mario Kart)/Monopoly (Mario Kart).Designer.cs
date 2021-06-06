@@ -40,6 +40,12 @@
             this.txtPlayer8 = new System.Windows.Forms.TextBox();
             this.txtPlayer7 = new System.Windows.Forms.TextBox();
             this.pictureBoxBoard = new System.Windows.Forms.PictureBox();
+            this.comboBoxNumberPlayers = new System.Windows.Forms.ComboBox();
+            this.lblplayers = new System.Windows.Forms.Label();
+            this.btnRoll = new System.Windows.Forms.Button();
+            this.btnreset = new System.Windows.Forms.Button();
+            this.lbldice = new System.Windows.Forms.Label();
+            this.lblpower = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBoard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -177,11 +183,85 @@
             this.pictureBoxBoard.TabIndex = 12;
             this.pictureBoxBoard.TabStop = false;
             // 
+            // comboBoxNumberPlayers
+            // 
+            this.comboBoxNumberPlayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxNumberPlayers.FormattingEnabled = true;
+            this.comboBoxNumberPlayers.Items.AddRange(new object[] {
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"});
+            this.comboBoxNumberPlayers.Location = new System.Drawing.Point(276, 621);
+            this.comboBoxNumberPlayers.Name = "comboBoxNumberPlayers";
+            this.comboBoxNumberPlayers.Size = new System.Drawing.Size(48, 21);
+            this.comboBoxNumberPlayers.Sorted = true;
+            this.comboBoxNumberPlayers.TabIndex = 13;
+            this.comboBoxNumberPlayers.TabStop = false;
+            this.comboBoxNumberPlayers.Tag = "Number";
+            this.comboBoxNumberPlayers.SelectedIndexChanged += new System.EventHandler(this.comboBoxNumberPlayers_SelectedIndexChanged);
+            // 
+            // lblplayers
+            // 
+            this.lblplayers.AutoSize = true;
+            this.lblplayers.Location = new System.Drawing.Point(174, 621);
+            this.lblplayers.Name = "lblplayers";
+            this.lblplayers.Size = new System.Drawing.Size(96, 13);
+            this.lblplayers.TabIndex = 14;
+            this.lblplayers.Text = "Number of Players:";
+            // 
+            // btnRoll
+            // 
+            this.btnRoll.Enabled = false;
+            this.btnRoll.Location = new System.Drawing.Point(747, 561);
+            this.btnRoll.Name = "btnRoll";
+            this.btnRoll.Size = new System.Drawing.Size(75, 23);
+            this.btnRoll.TabIndex = 15;
+            this.btnRoll.Text = "ROLL";
+            this.btnRoll.UseVisualStyleBackColor = true;
+            this.btnRoll.Click += new System.EventHandler(this.btnRoll_Click);
+            // 
+            // btnreset
+            // 
+            this.btnreset.Enabled = false;
+            this.btnreset.Location = new System.Drawing.Point(354, 618);
+            this.btnreset.Name = "btnreset";
+            this.btnreset.Size = new System.Drawing.Size(75, 23);
+            this.btnreset.TabIndex = 16;
+            this.btnreset.Text = "Reset";
+            this.btnreset.UseVisualStyleBackColor = true;
+            this.btnreset.Click += new System.EventHandler(this.btnreset_Click);
+            // 
+            // lbldice
+            // 
+            this.lbldice.AutoSize = true;
+            this.lbldice.Location = new System.Drawing.Point(677, 491);
+            this.lbldice.Name = "lbldice";
+            this.lbldice.Size = new System.Drawing.Size(53, 13);
+            this.lbldice.TabIndex = 17;
+            this.lbldice.Text = "Dice Roll:";
+            // 
+            // lblpower
+            // 
+            this.lblpower.AutoSize = true;
+            this.lblpower.Location = new System.Drawing.Point(790, 491);
+            this.lblpower.Name = "lblpower";
+            this.lblpower.Size = new System.Drawing.Size(55, 13);
+            this.lblpower.TabIndex = 18;
+            this.lblpower.Text = "Power-up:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblpower);
+            this.Controls.Add(this.lbldice);
+            this.Controls.Add(this.btnreset);
+            this.Controls.Add(this.btnRoll);
+            this.Controls.Add(this.lblplayers);
+            this.Controls.Add(this.comboBoxNumberPlayers);
             this.Controls.Add(this.pictureBoxBoard);
             this.Controls.Add(this.txtPlayer8);
             this.Controls.Add(this.txtPlayer7);
@@ -194,6 +274,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.characterselectbtn);
             this.Controls.Add(this.startbtn);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBoard)).EndInit();
@@ -216,6 +297,12 @@
         private System.Windows.Forms.TextBox txtPlayer8;
         private System.Windows.Forms.TextBox txtPlayer7;
         private System.Windows.Forms.PictureBox pictureBoxBoard;
+        private System.Windows.Forms.Label lblplayers;
+        private System.Windows.Forms.ComboBox comboBoxNumberPlayers;
+        private System.Windows.Forms.Button btnRoll;
+        private System.Windows.Forms.Button btnreset;
+        private System.Windows.Forms.Label lbldice;
+        private System.Windows.Forms.Label lblpower;
     }
 }
 

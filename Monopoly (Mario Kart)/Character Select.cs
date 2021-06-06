@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Monopoly__Mario_Kart_
@@ -15,7 +10,7 @@ namespace Monopoly__Mario_Kart_
         {
             InitializeComponent();
         }
-
+        public string selectedret { get; set; }
         private void Form2_Load(object sender, EventArgs e)
         {
 
@@ -113,12 +108,85 @@ namespace Monopoly__Mario_Kart_
 
         private void pictureBoxYoshi_MouseEnter(object sender, EventArgs e)
         {
-            pictureBoxYoshi.BackgroundImage = Monopoly__Mario_Kart_.Properties.Resources.yoshiback;
+            pictureBoxYoshi.BackgroundImage = Properties.Resources.yoshiback;
         }
 
         private void pictureBoxYoshi_MouseLeave(object sender, EventArgs e)
         {
-            pictureBoxYoshi.BackgroundImage = Monopoly__Mario_Kart_.Properties.Resources.yoshifront;
+            pictureBoxYoshi.BackgroundImage = Properties.Resources.yoshifront;
+        }
+
+        private void pictureBoxBowser_Click(object sender, EventArgs e)
+        {
+            //return bowser
+            selectedret = "Bowser";
+            pictureBoxBowser.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxDonkeyKong_Click(object sender, EventArgs e)
+        {
+            //return Donkey Kong
+            selectedret = "Donkey Kong";
+            pictureBoxDonkeyKong.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxLuigi_Click(object sender, EventArgs e)
+        {
+            selectedret = "Luigi";
+            pictureBoxLuigi.Enabled = false;
+            this.Close();
+
+        }
+
+        private void pictureBoxMario_Click(object sender, EventArgs e)
+        {
+            selectedret = "Mario";
+            pictureBoxMario.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxMetalMario_Click(object sender, EventArgs e)
+        {
+            selectedret = "Metal Mario";
+            pictureBoxMetalMario.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxPeach_Click(object sender, EventArgs e)
+        {
+            selectedret = "Princess Peach";
+            pictureBoxPeach.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxRosalina_Click(object sender, EventArgs e)
+        {
+            selectedret = "Rosalina";
+            pictureBoxRosalina.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxShyGuy_Click(object sender, EventArgs e)
+        {
+            selectedret = "Shy Guy";
+            pictureBoxShyGuy.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxToad_Click(object sender, EventArgs e)
+        {
+            selectedret = "Toad";
+            pictureBoxToad.Enabled = false;
+            this.Close();
+        }
+
+        private void pictureBoxYoshi_Click(object sender, EventArgs e)
+        {
+            selectedret = "Yoshi";
+            pictureBoxYoshi.Enabled = false;
+            this.Close();
         }
     }
 }
