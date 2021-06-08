@@ -133,7 +133,7 @@ namespace Monopoly__Mario_Kart_
             draw();            
             while (laps < 8)
             {
-
+                if (worker.CancellationPending) { break; }
                 if (NETWORK)
                 {
                     if (HOST)
@@ -150,7 +150,7 @@ namespace Monopoly__Mario_Kart_
                 }
                 else
                 {
-                    if (players[currentplayer].jail) { }
+                    if (players[currentplayer].jail) { players[currentplayer].coins -= 5; }
                     else if (players[currentplayer].PC)
                     { //if current player is pc do turn
                         string power = rollpowerup();
@@ -162,7 +162,10 @@ namespace Monopoly__Mario_Kart_
                     else
                     {
                         // wait for player input 
-                         if (!btnRoll.Enabled) { Invoke(new Action(() => {btnRoll.Enabled = true;})); } while (btnRoll.Enabled) { }
+                         if (!btnRoll.Enabled) { Invoke(new Action(() => {btnRoll.Enabled = true;})); } 
+                         while (btnRoll.Enabled) {
+                            if (worker.CancellationPending) { break; }
+                         }
                          if (!players[currentplayer].skippower)
                          {
                              usepowerup(playerpower, players[currentplayer]);
@@ -173,7 +176,7 @@ namespace Monopoly__Mario_Kart_
                 if (PASSGO)
                 {
                     players[currentplayer].coins += 2;
-                    startrace(laps, currentplayer);
+                    startrace(Races[laps], currentplayer);
                     laps++;
                     PASSGO = false;
                 }
@@ -186,11 +189,12 @@ namespace Monopoly__Mario_Kart_
                 }
                 draw();
             }
+            if (!worker.CancellationPending) { 
             foreach (Player p in players)
             {
                 Console.WriteLine(p);
             }
-            MessageBox.Show("Winner is : " + System.Environment.NewLine + calculate_winner());
+            MessageBox.Show("Winner is : " + System.Environment.NewLine + calculate_winner());}
 
         }
 
@@ -203,9 +207,8 @@ namespace Monopoly__Mario_Kart_
 
         }
 
-        private void startrace(int laps, int cp)
+        private void startrace(Race r, int cp)
         {
-            Race r = Races[laps];
             List<Player> entrants = new List<Player>();
             for (int i = cp; i < players.Count; i++)
             { //starting with current player loop thru each player
@@ -226,20 +229,94 @@ namespace Monopoly__Mario_Kart_
             rolls.RemoveAt(firstindex);
             int secondindex = rolls.IndexOf(rolls.Max());
             rolls.RemoveAt(secondindex);
-            int thridindex = rolls.IndexOf(rolls.Max());
-            entrants[firstindex].races.Add(Races[laps]);
+            int thirdindex = rolls.IndexOf(rolls.Max());
+            entrants[firstindex].races.Add(r);
             //TODO: special rewards of cards
+            switch (r.name)
+            {
+                case "Moo Moo Meadows":
+                    if (Properties.Count > 0) { //reward for winning take least expensive unowned property (free)
+                        entrants[firstindex].properties.Add(Properties[0]);
+                        Properties.RemoveAt(0);
+                    }
+
+                    entrants[secondindex].coins += 3;//second place gains 3 coins
+
+                    usepowerup("Green Shell",entrants[thirdindex]);//3rd place gets to use a green shell
+                    break;
+                case "Toads Turnpike":
+                    for (int i = 0; i < players.Count; i++) { //each other player pays winniner 2 coins
+                        if (i != firstindex) {
+                            players[i].coins -= 2;
+                            entrants[firstindex].coins += 2;
+                        }
+                    }
+
+                    entrants[secondindex].coins += rollnumber();//second place gets xcoins based on number roll
+
+                    entrants[thirdindex].coins += 3;
+                    break;
+                case "Royal Raceway":
+                    Property p = pickownedproperty(entrants[firstindex]);  //first reward player may buy property from any other player for face value                  
+                    Player owner = findpropertyowner(p);
+                    owner.coins += p.cost;
+                    entrants[firstindex].coins -= p.cost;
+                    entrants[firstindex].properties.Add(p);
+                    owner.properties.Remove(p);
+
+                    entrants[secondindex].coins += 4;//second player gains 4 coins
+
+                    usepowerup("Blue Shell", entrants[thirdindex]);//third player gets to use a blueshell
+                    break;
+                case "DK Jungle":
+                    Player player = pickplayer(entrants[firstindex],true);
+                        player.boardposition = 16;
+
+                    usepowerup(rollpowerup(), entrants[secondindex]);
+                    break;
+                case "Sherbet Land":
+                    //force a property trade
+                    Property tradeunowned = pickownedproperty(entrants[firstindex]);
+                    Property tradeowned = selectownproperty(entrants[firstindex]);
+                    if (tradeowned != null)
+                    {
+                        tradepropertys(tradeowned, tradeunowned, entrants[firstindex]);
+                    }
+                    else {
+                        tradeowned = pickownedproperty(entrants[firstindex]);
+                        while(tradeowned == tradeunowned)
+                        {
+                            tradeowned = pickownedproperty(entrants[firstindex]);
+                        }
+                        tradepropertys(tradeowned, tradeunowned, findpropertyowner(tradeowned));
+                    }
+
+                    placebananaproperty(entrants[secondindex]);
+                    break;
+                case "Yoshi Valley":
+                    auction(pickownedproperty(entrants[firstindex]));
+
+                    entrants[secondindex].coins += rollnumber();
+                    break;
+                case "Tick-Tock Clock":
+                    //send a player to jail
+                    Player j = pickplayer(entrants[firstindex],false);
+                    j.jail = true;
+
+                    usepowerup(rollpowerup(), entrants[secondindex]);
+                    break;
+                case "Rainbow Road":
+                    rerace(entrants[firstindex]);
+                    break;
+            }
 
             void joinrace(int i)
             {
                 if (NETWORK) { }
                 if (players[i].PC && !players[i].jail)
                 {//if player is pc and not in jail check if they can afford and join
-                 //if (players[i].coins >= r.entrycost)
-                 //{
                     players[i].coins -= r.entrycost;
                     entrants.Add(players[i]);
-                    //}
                 }
                 else if (!players[i].jail)
                 {
@@ -254,6 +331,101 @@ namespace Monopoly__Mario_Kart_
 
                 }
             }
+        }
+
+        private void rerace(Player p)
+        {
+            int cp = 0;
+            for (int i = 0; i < players.Count; i++) {
+                if (players[i] == p) { 
+                    cp = i; 
+                }
+            }
+
+            //select unowned race
+            List<Race> ra = new List<Race>();
+            foreach (Race r in Races) {
+                if (!p.races.Contains(r)) {
+                    ra.Add(r); 
+                }
+            }
+            if (p.PC)
+            {
+                int race = rand.Next(ra.Count);
+                startrace(ra[race], cp);
+            }
+            else { 
+                //TODO: display races to pick form and pick 
+            }
+
+        }
+
+        private void tradepropertys(Property tradeowned, Property tradeunowned,Player owner)
+        {
+           Player p = findpropertyowner(tradeunowned);
+            owner.properties.Add(tradeunowned);
+            p.properties.Remove(tradeunowned);
+            p.properties.Add(tradeowned);
+            owner.properties.Remove(tradeowned);
+            
+        }
+
+        private Property selectownproperty(Player p)
+        {
+            int i = rand.Next(p.properties.Count);
+            if (p.properties.Count > 0)
+            {
+                return p.properties[i];
+            }
+            else {
+                return null;
+            }
+        }
+
+        private Player pickplayer(Player p,bool selfpick)
+        {
+            if (p.PC)
+            {
+                int i = rand.Next(players.Count);
+                if (!selfpick)
+                {
+                    while (players[i] == p)
+                    {
+                        i = rand.Next(players.Count);
+                    }
+                }
+                return players[i];
+            }
+            else {
+                //TODO playerinput
+                return p;
+            }
+        }
+
+        private Player findpropertyowner(Property p)
+        {
+            foreach (Player pl in players) {
+                if (pl.properties.Contains(p)) {
+                    return pl;
+                }
+            }
+            return null;
+        }
+
+        private Property pickownedproperty(Player player)
+        {
+            List<Property> pr = new List<Property>();
+            foreach (Player p in players) {
+                if (p != player)
+                {
+                    foreach (Property prop in p.properties)
+                    {
+                        pr.Add(prop);
+                    }
+                }
+            }
+            //TODO:player input
+            return pr[rand.Next(pr.Count)];//return a random property for pc
         }
 
         private void usepowerup(string power, Player p)
@@ -324,14 +496,7 @@ namespace Monopoly__Mario_Kart_
                     else if (p.racer.name == "Luigi")
                     {
                         //place banana on property
-                        if (p.PC)
-                        {
-                            if (p.properties.Count > 0)
-                            {
-                                int r = rand.Next(p.properties.Count);
-                                placebanana(FindPropertyBoard(p.properties[r].name));
-                            }
-                        }
+                        placebananaproperty(p);
 
                     }
                     else
@@ -449,6 +614,19 @@ namespace Monopoly__Mario_Kart_
                     break;
             }
         }
+
+        private void placebananaproperty(Player p)
+        {
+            if (p.PC)
+            {
+                if (p.properties.Count > 0)
+                {
+                    int r = rand.Next(p.properties.Count);
+                    placebanana(FindPropertyBoard(p.properties[r].name));
+                }
+            }
+        }
+
         /// <summary>
         /// Find A random player that is not p or p2
         /// </summary>
@@ -543,7 +721,7 @@ namespace Monopoly__Mario_Kart_
                         Board[j].banana = false;
                     }
 
-                } // something is broken?
+                } 
                 p.boardposition += r;
                 if (p.boardposition >= Board.Count)
                 {
@@ -630,7 +808,8 @@ namespace Monopoly__Mario_Kart_
                 case "Free Parking":
                     break;
                 case "GO to Jail":
-                    //p.jail = true;
+                    p.jail = true;
+                    p.boardposition = 8;
                     break;
             }
         }
@@ -697,7 +876,7 @@ namespace Monopoly__Mario_Kart_
                     break;
                 case "Shy Guy"://, "Move up to 3 spaces forward or backward follow rules of space you land on"
                     //get a number from -3 to 3 from player
-                    moveplayer(requestinputnumber(), p);
+                    moveplayer(requestinputnumber(-3, 3,p), p);
                     break;
                 case "Yoshi"://, "Collect all coins on the board"
                     foreach (Space sp in Board)
@@ -754,7 +933,7 @@ namespace Monopoly__Mario_Kart_
                 case "Toad"://, "You may drop up to 5 coins to move that many spaces"
                     if (p.PC)
                     {
-                        int a = rand.Next(0, 5);
+                        int a = requestinputnumber(0, 5, p);
                         p.coins -= a;
                         Board[p.boardposition].coins += a;
                         moveplayer(a, p);
@@ -770,10 +949,10 @@ namespace Monopoly__Mario_Kart_
             }
         }
 
-        private int requestinputnumber()
+        private int requestinputnumber(int min, int max, Player p)
         {
             //TODO: get input
-            return 3;
+            return rand.Next(min, max);
         }
 
         private void repo(Player pl)
@@ -942,14 +1121,16 @@ namespace Monopoly__Mario_Kart_
 
         private void btnreset_Click(object sender, EventArgs e)
         {
-            if (!worker.IsBusy)
+            if (worker.IsBusy)
             {
-                resetgame();
                 //if the game is running cancel it
-                btnreset.Enabled = false;
+                worker.CancelAsync();
+                MessageBox.Show("Game Is running");
             }
-            else {
-                MessageBox.Show("Game is Inprogress Cannot reset");
+            else
+            {
+                btnreset.Enabled = false;
+                resetgame();
             }
         }
     }
