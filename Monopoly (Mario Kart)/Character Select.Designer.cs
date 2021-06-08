@@ -61,9 +61,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxPeach.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxPeach.TabIndex = 9;
             this.pictureBoxPeach.TabStop = false;
-            this.pictureBoxPeach.Click += new System.EventHandler(this.pictureBoxPeach_Click);
-            this.pictureBoxPeach.MouseEnter += new System.EventHandler(this.pictureBoxPeach_MouseEnter);
-            this.pictureBoxPeach.MouseLeave += new System.EventHandler(this.pictureBoxPeach_MouseLeave);
+            this.pictureBoxPeach.Click += new System.EventHandler(this.PictureBoxPeach_Click);
+            this.pictureBoxPeach.MouseEnter += new System.EventHandler(this.PictureBoxPeach_MouseEnter);
+            this.pictureBoxPeach.MouseLeave += new System.EventHandler(this.PictureBoxPeach_MouseLeave);
             // 
             // pictureBoxRosalina
             // 
@@ -75,9 +75,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxRosalina.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxRosalina.TabIndex = 8;
             this.pictureBoxRosalina.TabStop = false;
-            this.pictureBoxRosalina.Click += new System.EventHandler(this.pictureBoxRosalina_Click);
-            this.pictureBoxRosalina.MouseEnter += new System.EventHandler(this.pictureBoxRosalina_MouseEnter);
-            this.pictureBoxRosalina.MouseLeave += new System.EventHandler(this.pictureBoxRosalina_MouseLeave);
+            this.pictureBoxRosalina.Click += new System.EventHandler(this.PictureBoxRosalina_Click);
+            this.pictureBoxRosalina.MouseEnter += new System.EventHandler(this.PictureBoxRosalina_MouseEnter);
+            this.pictureBoxRosalina.MouseLeave += new System.EventHandler(this.PictureBoxRosalina_MouseLeave);
             // 
             // pictureBoxShyGuy
             // 
@@ -89,9 +89,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxShyGuy.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxShyGuy.TabIndex = 7;
             this.pictureBoxShyGuy.TabStop = false;
-            this.pictureBoxShyGuy.Click += new System.EventHandler(this.pictureBoxShyGuy_Click);
-            this.pictureBoxShyGuy.MouseEnter += new System.EventHandler(this.pictureBoxShyGuy_MouseEnter);
-            this.pictureBoxShyGuy.MouseLeave += new System.EventHandler(this.pictureBoxShyGuy_MouseLeave);
+            this.pictureBoxShyGuy.Click += new System.EventHandler(this.PictureBoxShyGuy_Click);
+            this.pictureBoxShyGuy.MouseEnter += new System.EventHandler(this.PictureBoxShyGuy_MouseEnter);
+            this.pictureBoxShyGuy.MouseLeave += new System.EventHandler(this.PictureBoxShyGuy_MouseLeave);
             // 
             // pictureBoxYoshi
             // 
@@ -103,9 +103,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxYoshi.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxYoshi.TabIndex = 6;
             this.pictureBoxYoshi.TabStop = false;
-            this.pictureBoxYoshi.Click += new System.EventHandler(this.pictureBoxYoshi_Click);
-            this.pictureBoxYoshi.MouseEnter += new System.EventHandler(this.pictureBoxYoshi_MouseEnter);
-            this.pictureBoxYoshi.MouseLeave += new System.EventHandler(this.pictureBoxYoshi_MouseLeave);
+            this.pictureBoxYoshi.Click += new System.EventHandler(this.PictureBoxYoshi_Click);
+            this.pictureBoxYoshi.MouseEnter += new System.EventHandler(this.PictureBoxYoshi_MouseEnter);
+            this.pictureBoxYoshi.MouseLeave += new System.EventHandler(this.PictureBoxYoshi_MouseLeave);
             // 
             // pictureBoxToad
             // 
@@ -117,9 +117,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxToad.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxToad.TabIndex = 5;
             this.pictureBoxToad.TabStop = false;
-            this.pictureBoxToad.Click += new System.EventHandler(this.pictureBoxToad_Click);
-            this.pictureBoxToad.MouseEnter += new System.EventHandler(this.pictureBoxToad_MouseEnter);
-            this.pictureBoxToad.MouseLeave += new System.EventHandler(this.pictureBoxToad_MouseLeave);
+            this.pictureBoxToad.Click += new System.EventHandler(this.PictureBoxToad_Click);
+            this.pictureBoxToad.MouseEnter += new System.EventHandler(this.PictureBoxToad_MouseEnter);
+            this.pictureBoxToad.MouseLeave += new System.EventHandler(this.PictureBoxToad_MouseLeave);
             // 
             // pictureBoxMetalMario
             // 
@@ -131,9 +131,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxMetalMario.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxMetalMario.TabIndex = 4;
             this.pictureBoxMetalMario.TabStop = false;
-            this.pictureBoxMetalMario.Click += new System.EventHandler(this.pictureBoxMetalMario_Click);
-            this.pictureBoxMetalMario.MouseEnter += new System.EventHandler(this.pictureBoxMetalMario_MouseEnter);
-            this.pictureBoxMetalMario.MouseLeave += new System.EventHandler(this.pictureBoxMetalMario_MouseLeave);
+            this.pictureBoxMetalMario.Click += new System.EventHandler(this.PictureBoxMetalMario_Click);
+            this.pictureBoxMetalMario.MouseEnter += new System.EventHandler(this.PictureBoxMetalMario_MouseEnter);
+            this.pictureBoxMetalMario.MouseLeave += new System.EventHandler(this.PictureBoxMetalMario_MouseLeave);
             // 
             // pictureBoxMario
             // 
@@ -145,9 +145,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxMario.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxMario.TabIndex = 3;
             this.pictureBoxMario.TabStop = false;
-            this.pictureBoxMario.Click += new System.EventHandler(this.pictureBoxMario_Click);
-            this.pictureBoxMario.MouseEnter += new System.EventHandler(this.pictureBoxMario_MouseEnter);
-            this.pictureBoxMario.MouseLeave += new System.EventHandler(this.pictureBoxMario_MouseLeave);
+            this.pictureBoxMario.Click += new System.EventHandler(this.PictureBoxMario_Click);
+            this.pictureBoxMario.MouseEnter += new System.EventHandler(this.PictureBoxMario_MouseEnter);
+            this.pictureBoxMario.MouseLeave += new System.EventHandler(this.PictureBoxMario_MouseLeave);
             // 
             // pictureBoxLuigi
             // 
@@ -159,9 +159,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxLuigi.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxLuigi.TabIndex = 2;
             this.pictureBoxLuigi.TabStop = false;
-            this.pictureBoxLuigi.Click += new System.EventHandler(this.pictureBoxLuigi_Click);
-            this.pictureBoxLuigi.MouseEnter += new System.EventHandler(this.pictureBoxLuigi_MouseEnter);
-            this.pictureBoxLuigi.MouseLeave += new System.EventHandler(this.pictureBoxLuigi_MouseLeave);
+            this.pictureBoxLuigi.Click += new System.EventHandler(this.PictureBoxLuigi_Click);
+            this.pictureBoxLuigi.MouseEnter += new System.EventHandler(this.PictureBoxLuigi_MouseEnter);
+            this.pictureBoxLuigi.MouseLeave += new System.EventHandler(this.PictureBoxLuigi_MouseLeave);
             // 
             // pictureBoxDonkeyKong
             // 
@@ -173,9 +173,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxDonkeyKong.Size = new System.Drawing.Size(110, 170);
             this.pictureBoxDonkeyKong.TabIndex = 1;
             this.pictureBoxDonkeyKong.TabStop = false;
-            this.pictureBoxDonkeyKong.Click += new System.EventHandler(this.pictureBoxDonkeyKong_Click);
-            this.pictureBoxDonkeyKong.MouseEnter += new System.EventHandler(this.pictureBoxDonkeyKong_MouseEnter);
-            this.pictureBoxDonkeyKong.MouseLeave += new System.EventHandler(this.pictureBoxDonkeyKong_MouseLeave);
+            this.pictureBoxDonkeyKong.Click += new System.EventHandler(this.PictureBoxDonkeyKong_Click);
+            this.pictureBoxDonkeyKong.MouseEnter += new System.EventHandler(this.PictureBoxDonkeyKong_MouseEnter);
+            this.pictureBoxDonkeyKong.MouseLeave += new System.EventHandler(this.PictureBoxDonkeyKong_MouseLeave);
             // 
             // pictureBoxBowser
             // 
@@ -189,9 +189,9 @@ namespace Monopoly__Mario_Kart_
             this.pictureBoxBowser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxBowser.TabIndex = 0;
             this.pictureBoxBowser.TabStop = false;
-            this.pictureBoxBowser.Click += new System.EventHandler(this.pictureBoxBowser_Click);
-            this.pictureBoxBowser.MouseEnter += new System.EventHandler(this.pictureBoxBowser_MouseEnter);
-            this.pictureBoxBowser.MouseLeave += new System.EventHandler(this.pictureBoxBowser_MouseLeave);
+            this.pictureBoxBowser.Click += new System.EventHandler(this.PictureBoxBowser_Click);
+            this.pictureBoxBowser.MouseEnter += new System.EventHandler(this.PictureBoxBowser_MouseEnter);
+            this.pictureBoxBowser.MouseLeave += new System.EventHandler(this.PictureBoxBowser_MouseLeave);
             // 
             // Form2
             // 
