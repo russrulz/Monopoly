@@ -64,6 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerInput.Designer.cs">
+      <DependentUpon>PlayerInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Player.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -90,6 +96,9 @@
     <Compile Include="Space.cs" />
     <EmbeddedResource Include="Character Select.resx">
       <DependentUpon>Character Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerInput.resx">
+      <DependentUpon>PlayerInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Monopoly %28Mario Kart%29.resx">
       <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
