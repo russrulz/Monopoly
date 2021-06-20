@@ -19,5 +19,17 @@
             this.third_reward = third;
             this.points = points;
         }
+        public override string ToString()
+        {
+            string s = "";
+            s += "Name: " + name + System.Environment.NewLine;
+            s += "Race Number: " + racenumber + System.Environment.NewLine;
+            s += "Reward for First: " + first_reward + System.Environment.NewLine;
+            s += "Reward for Second: " + second_reward + System.Environment.NewLine;
+            s += "Reward for Third: " + third_reward + System.Environment.NewLine;
+            s += "Points: " + points;
+
+            return base.ToString();
+        }
     }
 }

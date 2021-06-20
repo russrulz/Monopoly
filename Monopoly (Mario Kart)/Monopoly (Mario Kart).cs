@@ -126,6 +126,7 @@ namespace Monopoly__Mario_Kart_
         private readonly BackgroundWorker worker = new BackgroundWorker();
         Form2 settingsForm = new Form2();
         PlayerInput requestForm = new PlayerInput();
+        Form3 selector = new Form3();
         private void Main()
         {
             int laps = 0;
@@ -274,7 +275,7 @@ namespace Monopoly__Mario_Kart_
                     Usepowerup("Blue Shell", entrants[thirdindex]);//third player gets to use a blueshell
                     break;
                 case "DK Jungle":
-                    Player player = Pickplayer(entrants[firstindex], true);
+                    Player player = Pickplayer(entrants[firstindex], true,"Send player to Free Parking");
                     player.boardposition = 16;
 
                     Usepowerup(Rollpowerup(), entrants[secondindex]);
@@ -306,7 +307,7 @@ namespace Monopoly__Mario_Kart_
                     break;
                 case "Tick-Tock Clock":
                     //send a player to jail
-                    Player j = Pickplayer(entrants[firstindex], false);
+                    Player j = Pickplayer(entrants[firstindex], false,"Send Player to Jail");
                     j.jail = true;
                     j.boardposition = 8;
 
@@ -362,8 +363,7 @@ namespace Monopoly__Mario_Kart_
             }
             if (p.PC)
             {
-                int race = rand.Next(ra.Count);
-                Startrace(ra[race], cp);
+                
             }
             else
             {
@@ -371,6 +371,18 @@ namespace Monopoly__Mario_Kart_
                 //TODO: Player Input
                 //TODO: display races to pick form to player and pick 
             }
+            int race = rand.Next(ra.Count);
+            if (!p.PC) {
+                selector.Text = "Select a race to rerace!";
+                for (int i = 0; i < Races.Count; i++)
+                {
+                    selector.buttons[i].Text = Races[i].ToString();
+                    selector.buttons[i].Enabled = true;
+                }
+                selector.ShowDialog();
+                race =  selector.retval;
+            }
+            Startrace(ra[race], cp);
 
         }
 
@@ -386,14 +398,27 @@ namespace Monopoly__Mario_Kart_
 
         private Property Selectownproperty(Player p)
         {
-            int i = rand.Next(p.properties.Count);
-            if (p.properties.Count > 0)
+            if (p.PC)
             {
-                return p.properties[i];
+                int i = rand.Next(p.properties.Count);
+                if (p.properties.Count > 0)
+                {
+                    return p.properties[i];
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
-            {
-                return null;
+            else {
+                int s = Runselector(p.properties);
+                if (s == -1)
+                {
+                    return null;
+                }
+                else {
+                    return p.properties[s];
+                }
             }
         }
 
@@ -426,7 +451,27 @@ namespace Monopoly__Mario_Kart_
             }
             //TODO:player input
             //TODO: display property list and request one
-            return pr[rand.Next(pr.Count)];//return a random property for pc
+            if (player.PC)
+            {
+                return pr[rand.Next(pr.Count)];//return a random property for pc
+            }
+            else
+            {
+                int s = Runselector(pr);
+                return pr[s];
+            }
+        }
+
+        private int Runselector(List<Property> pr)
+        {
+            selector.Text = "Select a Property";
+            for (int i = 0; i < pr.Count; i++)
+            {
+                selector.buttons[i].Text = pr[i].ToString();
+                selector.buttons[i].Enabled = true;
+            }
+            selector.ShowDialog();
+            return selector.retval;
         }
 
         private void Usepowerup(string power, Player p)
@@ -591,10 +636,10 @@ namespace Monopoly__Mario_Kart_
                         //choose 2 players to drop 3
                         if (p.PC)
                         {
-                            Player pl = Randomplayer(p);
+                            Player pl = Pickplayer(p);
                             pl.coins -= 3;
                             Board[pl.boardposition].coins += 3;
-                            Player p2 = Randomplayer(p, pl);
+                            Player p2 = Pickplayer(p, pl,false);
                             p2.coins -= 3;
                             Board[p2.boardposition].coins += 3;
                         }
@@ -608,7 +653,7 @@ namespace Monopoly__Mario_Kart_
                         //choose player to drop 3
                         if (p.PC)
                         {
-                            Player pl = Randomplayer(p);
+                            Player pl = Pickplayer(p);
                             pl.coins -= 3;
                             Board[pl.boardposition].coins += 3;
                         }
@@ -623,27 +668,24 @@ namespace Monopoly__Mario_Kart_
 
         private void Placebananaproperty(Player p)
         {
-            if (p.PC)
+            if (p.properties.Count > 0)
             {
-                if (p.properties.Count > 0)
-                {
-                    int r = rand.Next(p.properties.Count);
-                    Placebanana(FindPropertyBoard(p.properties[r].name));
-                }
-            }
-            else {
-                Property pr = Pickownedproperty(p);
+                Property pr = Selectownproperty(p);
                 Placebanana(FindPropertyBoard(pr.name));
             }
         }
-        private Player Pickplayer(Player p, bool selfpick)
+        
+        private Player Pickplayer(Player p) => Pickplayer(p, null, false,"");
+        private Player Pickplayer(Player p, bool selfpick,string s) => Pickplayer(p, null, selfpick,s);
+        private Player Pickplayer(Player p, Player p2,bool selfpick) => Pickplayer(p, p2, selfpick, "");
+        private Player Pickplayer(Player p, Player p2,bool selfpick,string s)
         {
             if (p.PC)
             {
                 int i = rand.Next(players.Count);
                 if (!selfpick)
                 {
-                    while (players[i] == p)
+                    while (players[i] == p || players[i] == p2)
                     {
                         i = rand.Next(players.Count);
                     }
@@ -652,21 +694,26 @@ namespace Monopoly__Mario_Kart_
             }
             else
             {
-                //TODO: Player Input
-                return p;
-            }
-        }
-        private Player Randomplayer(Player p) => Randomplayer(p, null);
+                selector.Text = "Select a Player to Target "+s;
+                for(int i =0; i < players.Count; i++)
+                {
+                    selector.buttons[i].Text = players[i].ToString();
+                    if(players[i] == p) { 
+                        if (selfpick)
+                        {
+                            selector.buttons[i].Enabled = true;
+                        }
+                    }
+                    else if(players[i] != p2)
+                    {
+                        selector.buttons[i].Enabled = true;
+                    }
+                    
+                }
 
-        private Player Randomplayer(Player p, Player p2)
-        {
-            Player pl = players[rand.Next(players.Count)];
-            while (pl == p || pl == p2)
-            {
-                pl = players[rand.Next(players.Count)];
+                selector.ShowDialog();
+                return players[selector.retval];
             }
-
-            return pl;
         }
 
         /// <summary>
@@ -925,7 +972,7 @@ namespace Monopoly__Mario_Kart_
                         {
                             value++;
                             winnning = players[i];
-                        }
+                        }//TODO:fix reasking
                     }
                 }
 
@@ -961,7 +1008,7 @@ namespace Monopoly__Mario_Kart_
             switch (p.racer.name)
             {
                 case "Bowser": //"Steal 4 Coins"
-                    Player pl = Randomplayer(p);
+                    Player pl = Pickplayer(p,false,"Steal 4 Coins");
                     pl.coins -= 4;
                     p.coins += 4;
                     break;
@@ -990,27 +1037,21 @@ namespace Monopoly__Mario_Kart_
                     }
                     break;
                 case "Donkey Kong"://, "You may place 1 bannana on up to 2 properties you own"
-                    if (p.PC)
-                    {
                         if (p.properties.Count >= 2)
                         {
                             //pick 2 randomly?
                             //TODO: Limit banana count total
-                            int prop1 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
-                            int prop2 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
+                            int prop1 = FindPropertyBoard(Selectownproperty(p).name);
+                            int prop2 = FindPropertyBoard(Selectownproperty(p).name);
                             Placebanana(prop1);
                             Placebanana(prop2);
                             //place banana on 2 
                         }
                         else if (p.properties.Count > 0)
                         {
-                            int prop1 = FindPropertyBoard(p.properties[rand.Next(p.properties.Count)].name);
+                            int prop1 = FindPropertyBoard(Selectownproperty(p).name);
                             Placebanana(prop1);
                         }
-                    }
-                    else {
-                        //TODO: Player Input
-                    }
                     break;
                 case "Rosalina"://, "You may move to the next superstar space collecting any coins you pass"
 

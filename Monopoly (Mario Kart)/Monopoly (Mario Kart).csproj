@@ -64,6 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Multi Select.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Multi Select.Designer.cs">
+      <DependentUpon>Multi Select.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlayerInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Multi Select.resx">
+      <DependentUpon>Multi Select.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -17,6 +17,13 @@
             this.setrent = setrent;
             this.set = set;
         }
-
+        public override string ToString()
+        {
+            string s = "";
+            s += "Name: " + name + System.Environment.NewLine;
+            s += "Points: " + points + System.Environment.NewLine;
+            s += "Rent: " + rent + System.Environment.NewLine;
+            return s;
+        }
     }
 }
