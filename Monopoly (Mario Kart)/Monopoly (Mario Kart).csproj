@@ -64,7 +64,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Multi Select.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Multi Select.Designer.cs">
+      <DependentUpon>Multi Select.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerInput.Designer.cs">
+      <DependentUpon>PlayerInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Player.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Property.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Monopoly %28Mario Kart%29.cs">
@@ -86,18 +103,20 @@
     <EmbeddedResource Include="Character Select.resx">
       <DependentUpon>Character Select.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PlayerInput.resx">
+      <DependentUpon>PlayerInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Monopoly %28Mario Kart%29.resx">
       <DependentUpon>Monopoly %28Mario Kart%29.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="Multi Select.resx">
+      <DependentUpon>Multi Select.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -109,6 +128,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\boardsmall.png" />
     <Content Include="Images\bowserback.png" />
     <Content Include="Images\Bowserfront.png" />
     <Content Include="Images\donkeykongback.png" />
