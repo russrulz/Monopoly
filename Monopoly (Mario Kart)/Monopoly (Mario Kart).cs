@@ -157,7 +157,7 @@ namespace Monopoly__Mario_Kart_
                         string power = Rollpowerup();
                         int move = Rollnumber();
                         if (!players[currentplayer].skippower)
-                            Usepowerup(power, players[currentplayer]);
+                            Usepowerup(power, players[currentplayer],move);
                         Moveplayer(move, players[currentplayer]);
                     }
                     else
@@ -168,11 +168,24 @@ namespace Monopoly__Mario_Kart_
                         {
                             if (worker.CancellationPending) { break; }
                         }
-                        if (!players[currentplayer].skippower)
+                        DialogResult r =  MessageBox.Show("Move before using your powerup?", "Move First?",MessageBoxButtons.YesNo);
+                        players[currentplayer].movefirst = (r == DialogResult.Yes);
+                        if (players[currentplayer].movefirst)
                         {
-                            Usepowerup(playerpower, players[currentplayer]);
+                            Moveplayer(playermove, players[currentplayer]);
+                            if (!players[currentplayer].skippower)
+                            {
+                                Usepowerup(playerpower, players[currentplayer],playermove);
+                            }
+                        }                    
+                        else
+                        {
+                            if (!players[currentplayer].skippower)
+                            {
+                                Usepowerup(playerpower, players[currentplayer],playermove);
+                            }
+                            Moveplayer(playermove, players[currentplayer]);
                         }
-                        Moveplayer(playermove, players[currentplayer]);
                     }
                 }
                 if (PASSGO)
@@ -246,7 +259,7 @@ namespace Monopoly__Mario_Kart_
 
                     entrants[secondindex].coins += 3;//second place gains 3 coins
 
-                    Usepowerup("Green Shell", entrants[thirdindex]);//3rd place gets to use a green shell
+                    Usepowerup("Green Shell", entrants[thirdindex],0);//3rd place gets to use a green shell
                     break;
                 case "Toads Turnpike":
                     for (int i = 0; i < players.Count; i++)
@@ -272,13 +285,13 @@ namespace Monopoly__Mario_Kart_
 
                     entrants[secondindex].coins += 4;//second player gains 4 coins
 
-                    Usepowerup("Blue Shell", entrants[thirdindex]);//third player gets to use a blueshell
+                    Usepowerup("Blue Shell", entrants[thirdindex],0);//third player gets to use a blueshell
                     break;
                 case "DK Jungle":
                     Player player = Pickplayer(entrants[firstindex], true,"Send player to Free Parking");
                     player.boardposition = 16;
 
-                    Usepowerup(Rollpowerup(), entrants[secondindex]);
+                    Usepowerup(Rollpowerup(), entrants[secondindex],0);
                     break;
                 case "Sherbet Land":
                     //force a property trade
@@ -311,7 +324,7 @@ namespace Monopoly__Mario_Kart_
                     j.jail = true;
                     j.boardposition = 8;
 
-                    Usepowerup(Rollpowerup(), entrants[secondindex]);
+                    Usepowerup(Rollpowerup(), entrants[secondindex],0);
                     break;
                 case "Rainbow Road":
                     Rerace(entrants[firstindex]);
@@ -360,16 +373,6 @@ namespace Monopoly__Mario_Kart_
                 {
                     ra.Add(r);
                 }
-            }
-            if (p.PC)
-            {
-                
-            }
-            else
-            {
-
-                //TODO: Player Input
-                //TODO: display races to pick form to player and pick 
             }
             int race = rand.Next(ra.Count);
             if (!p.PC) {
@@ -449,8 +452,6 @@ namespace Monopoly__Mario_Kart_
                     }
                 }
             }
-            //TODO:player input
-            //TODO: display property list and request one
             if (player.PC)
             {
                 return pr[rand.Next(pr.Count)];//return a random property for pc
@@ -474,7 +475,7 @@ namespace Monopoly__Mario_Kart_
             return selector.retval;
         }
 
-        private void Usepowerup(string power, Player p)
+        private void Usepowerup(string power, Player p,int dieroll)
         {
             switch (power)
             {
@@ -502,7 +503,6 @@ namespace Monopoly__Mario_Kart_
                             if (play.coins < 0)
                             {
                                 Repo(play);
-                                //TODO: check if player is below 0 coins after subtracting and request input to sell property to make up the coins
                             }
                         }
                     }
@@ -526,13 +526,33 @@ namespace Monopoly__Mario_Kart_
                                     Bananas.Remove(ba);
                                     p.coins += 3;
                                 }
-
-
                             }
                         }
                         else
                         {
-                            //TODO: Player Input
+                            setupbananas();
+                            for (int i = 0; i < 3; i++)
+                            {
+                                if (MessageBox.Show("Bannanas removed: ","Remove a banana for 3 coins?" + i, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                {
+                                    if (Bananas.Count > 0)
+                                    {
+                                        selector.ShowDialog();
+                                        int s = Bananas[selector.retval];
+                                        Board[s].banana = false;
+                                        Bananas.Remove(s);
+                                        p.coins += 3;
+                                    }
+                                    else {
+                                        MessageBox.Show("No Bananas left to remove");
+                                        break;
+                                    }
+                                }
+                                if (Bananas.Count > 0)
+                                {
+                                    setupbananas();
+                                }
+                            }
                         }
 
                     }
@@ -552,6 +572,30 @@ namespace Monopoly__Mario_Kart_
                         else
                         {//TODO: Player Input
                          //place banana in x or x + die roll where x is starting position
+                            List<int> select=new List<int>();
+                            if (p.movefirst) {
+                                selector.Text = "Place banana how many spaces behind where you moved to?";
+                                for (int i = -dieroll;i<=0;i++)
+                                {
+                                    select.Add(i);
+                                    selector.buttons[i].Text = select[i].ToString();
+                                    selector.buttons[i].Enabled = true;
+                                }
+                                selector.ShowDialog();
+                            }
+                            else
+                            {
+                                selector.Text = "Place banana how many spaces in front of you?";
+                                for (int i = 0; i <= dieroll; i++)
+                                {
+                                    select.Add(i);
+                                    selector.buttons[i].Text = i.ToString();
+                                    selector.buttons[i].Enabled = true;
+                                }
+                                selector.ShowDialog();
+                            }
+                            Placebanana(p.boardposition + select[selector.retval]);
+
                         }
                     }
                     break;
@@ -634,35 +678,31 @@ namespace Monopoly__Mario_Kart_
                     else if (p.racer.name == "Princess Peach")
                     {
                         //choose 2 players to drop 3
-                        if (p.PC)
-                        {
-                            Player pl = Pickplayer(p);
-                            pl.coins -= 3;
-                            Board[pl.boardposition].coins += 3;
-                            Player p2 = Pickplayer(p, pl,false);
-                            p2.coins -= 3;
-                            Board[p2.boardposition].coins += 3;
-                        }
-                        else
-                        {
-                            //TODO: Player Input
-                        }
+                        Player pl = Pickplayer(p);
+                        pl.coins -= 3;
+                        Board[pl.boardposition].coins += 3;
+                        Player p2 = Pickplayer(p, pl,false);
+                        p2.coins -= 3;
+                        Board[p2.boardposition].coins += 3;
                     }
                     else
                     {
                         //choose player to drop 3
-                        if (p.PC)
-                        {
                             Player pl = Pickplayer(p);
                             pl.coins -= 3;
                             Board[pl.boardposition].coins += 3;
-                        }
-                        else
-                        {
-                            //TODO: Player Input
-                        }
                     }
                         break;
+            }
+
+            void setupbananas()
+            {
+                selector.Text = "Select banana to remove";
+                for (int i = 0; i < Bananas.Count; i++)
+                {
+                    selector.buttons[i].Text = Bananas[i].ToString();
+                    selector.buttons[i].Enabled = true;
+                }
             }
         }
 
@@ -826,21 +866,15 @@ namespace Monopoly__Mario_Kart_
                     if (Checkproperty(Board[p.boardposition].name, null))
                     {
                         //request if u want to buy/auction it
-                        bool buy = Buyorauction();
                         //pay amount 
                         //move property to players list of properties
                         for (int i = 0; i < Properties.Count; i++)
                         { //find property in list of banks properties
                             if (Properties[i].name == Board[p.boardposition].name)
                             {
-                                if (p.PC)
-                                {
-                                    // if (p.coins >= Properties[i].cost)
-                                    //  {
-                                    Buyproperty(p, Properties[i]);
-                                    //}
-                                }
-                                else if (buy)
+
+                                bool buy = Buyorauction(p, Properties[i]);
+                                if (buy)
                                 {
                                     Buyproperty(p, Properties[i]);
                                 }
@@ -967,17 +1001,27 @@ namespace Monopoly__Mario_Kart_
                     }
                     else
                     {
-                        DialogResult res = MessageBox.Show("Bid: " + (value + 1) + " ", "Bid?", MessageBoxButtons.YesNo);
-                        if (res == DialogResult.Yes)
+                        if (players[i].auction)
                         {
-                            value++;
-                            winnning = players[i];
-                        }//TODO:fix reasking
+                            DialogResult res = MessageBox.Show("Bid: " + (value + 1) + " ", "Bid?", MessageBoxButtons.YesNo);
+                            if (res == DialogResult.Yes)
+                            {
+                                value++;
+                                winnning = players[i];
+                            }
+                            else {
+                                players[i].auction = false;
+                            }
+                        }
                     }
                 }
 
                 i++;
                 if (i == players.Count) { i = 0; }//reset to the start of the list for bids if they have looped
+            }
+            //reset auction asking varaible
+            foreach (Player p in players) {
+                p.auction = true;
             }
             winnning.coins -= value;
             winnning.properties.Add(property);
@@ -996,11 +1040,18 @@ namespace Monopoly__Mario_Kart_
 
         }
 
-        private bool Buyorauction()
+        private bool Buyorauction(Player p,Property prop)
         {
-            //TODO: Implement input for auctions
-            //TODO: Player Input
-            return true;
+            if (p.PC)
+            {
+                return true;
+            }
+            else
+            {
+               DialogResult r = MessageBox.Show("Buy or auction?", "Buy "+prop.name +" ?", MessageBoxButtons.YesNo);
+
+                return (r == DialogResult.Yes);
+            }
         }
 
         private void Superstar(Player p)
@@ -1088,7 +1139,7 @@ namespace Monopoly__Mario_Kart_
                     }
                         break;
                 case "Princess Peach"://, "At the end of your turn roll powerup die and coplete the action"
-                    Usepowerup(Rollpowerup(), p);
+                    Usepowerup(Rollpowerup(), p,0);
                     break;
                 case "Mario"://, "Collect 3 coins then roll number die and move again"
                     p.coins += 3;
